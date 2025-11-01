@@ -1,15 +1,17 @@
 // src/content/config.ts
 import { defineCollection, z } from 'astro:content';
 
-// Definimos la colección "historias"
 const historiasCollection = defineCollection({
-  type: 'content', // Significa que son archivos .md o .mdx
+  type: 'content',
   schema: z.object({
-    title: z.string(),
-    resumen: z.string(),
-    // (Opcional) Puedes añadir más campos aquí, como:
-    // cover: z.string().optional(),
-    // fecha: z.date().optional(),
+    title: z.string(), // 
+    resumen: z.string(), // 
+    fecha: z.date(), // 
+    creditos: z.string().optional(), // 
+    publicado: z.boolean().default(true), // 
+    tags: z.array(z.string()).optional(), // 
+    // Usamos un string para la ruta de la imagen [cite: 117]
+    cover: z.string().optional(), 
   }),
 });
 

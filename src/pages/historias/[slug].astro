@@ -4,30 +4,46 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-// 1. Esta función le dice a Astro qué páginas debe crear en 'build'
-// Es el "mapa" de todas las páginas de historias
 export async function getStaticPaths() {
-  const allHistorias = await getCollection('historias');
+  const allHistorias = await getCollection('historias', ({ data }) => {
+    // Filtramos las historias que no estén publicadas
+    return data.publicado !== false;
+  });
   
   return allHistorias.map(historia => ({
-    params: { slug: historia.slug }, // El 'slug' (nombre de archivo) va en la URL
-    props: { historia }, // Le pasamos la 'historia' completa a esta página
+    params: { slug: historia.slug },
+    props: { historia },
   }));
 }
 
-// 2. Obtenemos la 'historia' específica que nos pasó getStaticPaths
 const { historia } = Astro.props;
-
-// 3. Obtenemos el componente <Content/> (el HTML renderizado) del .md
 const { Content } = await historia.render();
 ---
 <BaseLayout title={historia.data.title}>
-  <div class="container mx-auto p-4 max-w-3xl"> <h1 class="text-5xl font-bold text-gray-900 mb-4">{historia.data.title}</h1>
-    <p class="text-xl text-gray-700 italic mb-8">{historia.data.resumen}</p>
+  <div class="container mx-auto p-4 max-w-3xl">
     
-    <div class="prose lg:prose-xl">
+    <h1 class="text-5xl font-bold text-gray-900 mb-2">{historia.data.title}</h1>
+    
+    <div class="text-gray-600 mb-6">
+      <span>Publicado el {historia.data.fecha.toLocaleDateString('es-CL')}</span>
+      {historia.data.creditos && (
+        <span class="italic"> | {historia.data.creditos}</span>
+      )}
+    </div>
+
+    <div class="prose lg:prose-xl mb-8">
       <Content />
     </div>
+
+    {historia.data.tags && historia.data.tags.length > 0 && (
+      <div class="flex flex-wrap gap-2">
+        {historia.data.tags.map(tag => (
+          <span class="bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
 
   </div>
 </BaseLayout>
