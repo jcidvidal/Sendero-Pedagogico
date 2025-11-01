@@ -4,7 +4,7 @@ resumen: "Este es un breve resumen de la primera historia que estamos escribiend
 fecha: 2025-10-31
 creditos: "Entrevista a la Machi Olga Traipe"
 tags: ["Comunidad", "Wampo", "Historia Escuela"]
-//cover: "/images/historias/wampo-lago-budi.jpg"
+cover: "/images/historias/wampo-lago-budi.jpg"
 publicado: true
 ---
 

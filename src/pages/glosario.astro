@@ -1,0 +1,43 @@
+---
+// src/pages/glosario.astro
+
+// 👇 ¡Usamos la RUTA RELATIVA que sabemos que funciona!
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 1. Obtenemos las entradas del glosario
+const allPalabrasEntries = await getCollection('glosario');
+
+// 2. Las ordenamos alfabéticamente
+allPalabrasEntries.sort((a, b) => a.data.palabra.localeCompare(b.data.palabra));
+
+// 3. Renderizamos el contenido (¡el arreglo para .Content!)
+const allPalabras = await Promise.all(
+  allPalabrasEntries.map(async (item) => {
+    const { Content } = await item.render();
+    return {
+      data: item.data,
+      Content: Content,
+    };
+  })
+);
+---
+<BaseLayout title="Glosario Mapuche">
+  <div class="container mx-auto p-4 max-w-3xl">
+    <h1 class="text-4xl font-bold text-gray-900 mb-8">Glosario de Términos</h1>
+
+    <div class="space-y-6">
+      {allPalabras.map(item => (
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <h2 class="text-2xl font-bold text-gray-900">{item.data.palabra}</h2>
+          <p class="text-gray-700 mt-2">{item.data.significado}</p>
+
+          <div class="prose prose-sm mt-4 text-gray-600">
+            <item.Content /> 
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</BaseLayout>
