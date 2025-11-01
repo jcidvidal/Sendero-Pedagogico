@@ -1,0 +1,33 @@
+---
+// src/pages/historias/[slug].astro
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 1. Esta función le dice a Astro qué páginas debe crear en 'build'
+// Es el "mapa" de todas las páginas de historias
+export async function getStaticPaths() {
+  const allHistorias = await getCollection('historias');
+  
+  return allHistorias.map(historia => ({
+    params: { slug: historia.slug }, // El 'slug' (nombre de archivo) va en la URL
+    props: { historia }, // Le pasamos la 'historia' completa a esta página
+  }));
+}
+
+// 2. Obtenemos la 'historia' específica que nos pasó getStaticPaths
+const { historia } = Astro.props;
+
+// 3. Obtenemos el componente <Content/> (el HTML renderizado) del .md
+const { Content } = await historia.render();
+---
+<BaseLayout title={historia.data.title}>
+  <div class="container mx-auto p-4 max-w-3xl"> <h1 class="text-5xl font-bold text-gray-900 mb-4">{historia.data.title}</h1>
+    <p class="text-xl text-gray-700 italic mb-8">{historia.data.resumen}</p>
+    
+    <div class="prose lg:prose-xl">
+      <Content />
+    </div>
+
+  </div>
+</BaseLayout>

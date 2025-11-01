@@ -1,0 +1,19 @@
+---
+// src/layouts/BaseLayout.astro
+
+// Importa los estilos globales de Tailwind
+import '@/styles/global.css';
+
+// Recibe el 'title' de la página que lo use
+const { title } = Astro.props;
+---
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>{title}</title>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <slot /> 
+</body>
+</html>
