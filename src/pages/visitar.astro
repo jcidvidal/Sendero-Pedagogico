@@ -1,0 +1,42 @@
+---
+// src/pages/visitar.astro
+
+// 👇 ¡Usamos la RUTA RELATIVA que sabemos que funciona!
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// 👇 ¡Usamos la RUTA PÚBLICA (con /imagenes/) que sabemos que funciona!
+// (Asegúrate de que tu mapa esté en 'public/imagenes/historias/mapa-ruca-raqui.jpg')
+const mapaUrl = "/imagenes/historias/Imagen de WhatsApp 2025-11-01 a las 18.59.00_e4a23671.jpg"; 
+---
+<BaseLayout title="Visita el Sendero">
+  <div class="container mx-auto p-4 max-w-4xl"> {/* Un poco más ancho para el mapa */}
+
+    <h1 class="text-4xl font-bold text-gray-900 mb-8">Visita el Sendero Pedagógico</h1>
+    
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Mapa del Territorio</h2>
+      <div class="bg-white p-4 rounded-lg shadow-md">
+        <img src={mapaUrl} alt="Cartografía del predio Escuela Ruca Raqui" class="w-full h-auto rounded-md" />
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Recorridos</h2>
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <p class="text-gray-700">
+          (Contenido pendiente: Aquí pondremos la información sobre los diferentes recorridos del sendero).
+        </p>
+      </div>
+    </section>
+    
+    <section>
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Normas de Cuidado y Respeto</h2>
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <p class="text-gray-700">
+          (Contenido pendiente: Aquí irá la lista de normas que está preparando tu compañero).
+        </p>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
