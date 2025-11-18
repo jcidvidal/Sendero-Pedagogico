@@ -1,7 +1,7 @@
 ---
 title: "Mi Primera Historia"
 resumen: "Este es un breve resumen de la primera historia que estamos escribiendo en nuestro blog."
-fecha: 2025-10-31
+fecha: "2025-10-31"
 creditos: "Entrevista a la Machi Olga Traipe"
 tags: ["Comunidad", "Wampo", "Historia Escuela"]
 cover: "/imagenes/historias/20250906_124100.jpg"

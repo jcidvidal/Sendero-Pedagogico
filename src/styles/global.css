@@ -1,1 +1,52 @@
 @import "tailwindcss";
+
+/* Configuración personalizada para Tailwind v4 */
+@theme {
+  --font-family-inter: 'Inter', sans-serif;
+  --font-family-playfair: 'Playfair Display', serif;
+  
+  --color-primary-50: #f0f9f4;
+  --color-primary-100: #dcf2e3;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-900: #064e3b;
+
+  /* Animaciones personalizadas */
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+}
+
+/* Clases de utilidad personalizadas */
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.font-inter {
+  font-family: var(--font-family-inter);
+}
+
+.font-playfair {
+  font-family: var(--font-family-playfair);
+}

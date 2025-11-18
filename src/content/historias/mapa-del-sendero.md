@@ -1,7 +1,7 @@
 ---
 title: "Cartografía del Sendero Ruca Raqui"
 resumen: "Un mapa oficial del predio de la escuela, mostrando la proyección del sendero, la infraestructura humana y las áreas de árboles exóticos."
-fecha: 2025-09-01
+fecha: "2025-09-01"
 creditos: "Cartografía Escuela Ruca Raqui (Septiembre 2025)"
 tags: ["Mapa", "Sendero", "Escuela"]
 publicado: true

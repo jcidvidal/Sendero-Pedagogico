@@ -1,7 +1,7 @@
 ---
 title: "El Sendero como Aula Viva"
 resumen: "El proyecto pedagógico se vincula al entorno, aprovechando el paisaje, los humedales y la biodiversidad como herramientas pedagógicas." 
-fecha: 2025-09-06
+fecha: "2025-09-06"
 creditos: "Acta de Reunión - Terreno"
 tags: ["Sendero Pedagógico", "Territorio", "Humedal"]
 publicado: true

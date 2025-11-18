@@ -1,0 +1,39 @@
+---
+// ---- ESTE ES EL CÓDIGO PARA: src/layouts/Layout.astro ----
+
+// 1. Importa los componentes que SIEMPRE se repiten
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro'; // <-- Esta es la línea corregida
+import { ViewTransitions } from 'astro:transitions';
+import '../styles/global.css'; // Importamos los estilos globales
+
+// 2. Esto permite que cada página le pase un "título"
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="Proyecto sendero intercultural Escuela Ruca Raqui" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{title}</title>
+    
+    <ViewTransitions /> 
+  </head>
+  <body>
+    <Header />
+    
+    <main>
+      <slot /> 
+    </main>
+    
+    <Footer />
+    
+  </body>
+</html>

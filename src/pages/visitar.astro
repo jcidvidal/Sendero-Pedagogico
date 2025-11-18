@@ -1,42 +1,82 @@
 ---
-// src/pages/visitar.astro
+// ---- ESTE ES EL NUEVO CÓDIGO PARA: src/pages/visitar.astro ----
 
-// 👇 ¡Usamos la RUTA RELATIVA que sabemos que funciona!
-import BaseLayout from '../layouts/BaseLayout.astro';
-
-// 👇 ¡Usamos la RUTA PÚBLICA (con /imagenes/) que sabemos que funciona!
-// (Asegúrate de que tu mapa esté en 'public/imagenes/historias/mapa-ruca-raqui.jpg')
-const mapaUrl = "/imagenes/historias/Imagen de WhatsApp 2025-11-01 a las 18.59.00_e4a23671.jpg"; 
+// 1. Importamos la plantilla, igual que en index.astro y normas.astro
+import Layout from '../layouts/Layout.astro';
 ---
-<BaseLayout title="Visita el Sendero">
-  <div class="container mx-auto p-4 max-w-4xl"> {/* Un poco más ancho para el mapa */}
 
-    <h1 class="text-4xl font-bold text-gray-900 mb-8">Visita el Sendero Pedagógico</h1>
+<Layout title="Visitar - Sendero Pedagógico">
+
+  <section class="relative bg-gradient-to-br from-emerald-900 via-green-800 to-amber-800 py-20 overflow-hidden">
+    <div class="absolute top-0 left-0 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+    <div class="absolute top-0 right-0 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+    <div class="absolute -bottom-8 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
     
-    <section class="mb-12">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Mapa del Territorio</h2>
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <img src={mapaUrl} alt="Cartografía del predio Escuela Ruca Raqui" class="w-full h-auto rounded-md" />
-      </div>
-    </section>
+    <div class="relative container mx-auto px-4 text-center text-white">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-playfair">Visitar el Sendero</h1>
+      <div class="w-24 h-1 bg-amber-400 mx-auto mb-6"></div>
+      <p class="text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
+        Planifica tu experiencia en nuestro Sendero Pedagógico
+      </p>
+    </div>
+  </section>
 
-    <section class="mb-12">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Recorridos</h2>
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <p class="text-gray-700">
-          (Contenido pendiente: Aquí pondremos la información sobre los diferentes recorridos del sendero).
-        </p>
-      </div>
-    </section>
-    
-    <section>
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Normas de Cuidado y Respeto</h2>
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <p class="text-gray-700">
-          (Contenido pendiente: Aquí irá la lista de normas que está preparando tu compañero).
-        </p>
-      </div>
-    </section>
+  <main class="container mx-auto px-4 py-16">
+    <div class="max-w-4xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-800 mb-6 font-playfair">Información General</h2>
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Horarios de Visita</h3>
+              <p class="text-gray-600">Lunes a Viernes: 9:00 - 17:00</p>
+              <p class="text-gray-600">Sábados: 10:00 - 14:00</p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Duración del Recorrido</h3>
+              <p class="text-gray-600">Aproximadamente 2 horas</p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Contacto</h3>
+              <p class="text-gray-600">Teléfono: +1234567890</p>
+              <p class="text-gray-600">Email: contacto@sendero.edu</p>
+            </div>
+          </div>
+        </div>
 
-  </div>
-</BaseLayout>
+        <div>
+          <h2 class="text-3xl font-bold text-gray-800 mb-6 font-playfair">Cómo Llegar</h2>
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Ubicación</h3>
+              <p class="text-gray-600">Escuela Pública Ruca Raqui, Isla Huapi, Comuna de Saavedra</p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Instrucciones</h3>
+              <p class="text-gray-600">Desde [punto de referencia], tomar [ruta] hasta llegar a [instrucciones específicas].</p>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Recomendaciones</h3>
+              <ul class="text-gray-600 list-disc list-inside space-y-2">
+                <li>Usar ropa cómoda y calzado adecuado para caminata</li>
+                <li>Llevar protección solar y agua</li>
+                <li>Respetar las normas del sendero</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-16">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4 font-playfair">¿Listo para visitarnos?</h2>
+        <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          Asegúrate de conocer nuestras normas antes de tu visita para una experiencia respetuosa y enriquecedora.
+        </p>
+        <a href="/normas" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+          Ver Normas del Sendero
+        </a>
+      </div>
+    </div>
+  </main>
+
+</Layout>

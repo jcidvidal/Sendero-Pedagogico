@@ -1,0 +1,116 @@
+---
+// src/pages/historias/index.astro
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro'; // 👈 NUEVO IMPORT
+import '../../styles/global.css';
+
+const allHistorias = await getCollection('historias');
+
+const historiasPublicadas = allHistorias
+  .filter((h: CollectionEntry<'historias'>) => h.data.publicado)
+  .sort((a: CollectionEntry<'historias'>, b: CollectionEntry<'historias'>) => 
+    new Date(b.data.fecha).getTime() - new Date(a.data.fecha).getTime()
+  );
+---
+
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Historias del Sendero Pedagógico | Sendero Pedagógico</title>
+  <style>
+    body { 
+      font-family: sans-serif; 
+      margin: 0; 
+      padding: 0; 
+      background-color: #f9fafb; 
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+  <!-- Header/Navbar -->
+  <Header />
+
+  <!-- Contenido principal -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <!-- Header de la página -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-green-800 mb-4 font-playfair">
+        Historias del Sendero
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Descubre las experiencias y transformaciones vividas en nuestro sendero pedagógico
+      </p>
+    </div>
+    
+    <!-- Grid de historias -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {historiasPublicadas.map((historia: CollectionEntry<'historias'>) => (
+        <article class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-green-100">
+          <a href={`/historias/${historia.slug}`} class="block h-full">
+            {historia.data.cover && (
+              <img 
+                src={historia.data.cover} 
+                alt={historia.data.title}
+                class="w-full h-48 object-cover"
+                loading="lazy"
+              />
+            )}
+            
+            <div class="p-6">
+              <h2 class="text-xl font-bold text-gray-800 mb-3 line-clamp-2 font-playfair">
+                {historia.data.title}
+              </h2>
+              
+              <p class="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
+                {historia.data.resumen}
+              </p>
+              
+              <div class="flex justify-between items-center mt-4">
+                <time class="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                  {historia.data.fecha}
+                </time>
+                
+                {historia.data.tags && historia.data.tags.length > 0 && (
+                  <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                    {historia.data.tags[0]}
+                  </span>
+                )}
+              </div>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+    
+    {historiasPublicadas.length === 0 && (
+      <div class="text-center py-16">
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-8 max-w-md mx-auto">
+          <p class="text-yellow-800 text-lg">No hay historias publicadas aún.</p>
+          <p class="text-yellow-600 mt-2">Pronto compartiremos nuestras experiencias.</p>
+        </div>
+      </div>
+    )}
+  </main>
+
+  <!-- Footer -->
+  <Footer /> <!-- 👈 NUEVO FOOTER -->
+</body>
+</html>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

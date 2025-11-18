@@ -12,6 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
+  // No necesitamos la integración @astrojs/tailwind para v4
   vite: {
     plugins: [tailwindcss()],
     
