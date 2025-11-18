@@ -7,10 +7,10 @@ const historias = defineCollection({
   schema: z.object({
     title: z.string(),
     resumen: z.string(),
-    fecha: z.string(),
+    fecha: z.coerce.date(),
     creditos: z.string().optional(),
-    tags: z.array(z.string()),
-    publicado: z.boolean().default(false),
+    tags: z.array(z.string()).optional(),
+    publicado: z.boolean().default(true),
     cover: z.string().optional()
   })
 });
@@ -28,6 +28,6 @@ const glosarioCollection = defineCollection({
 // Exporta SOLO UNA VEZ todas las colecciones
 export const collections = {
   historias,
-  glosario
+  glosario: glosarioCollection
   // puedes agregar más colecciones aquí
 };

@@ -1,6 +1,6 @@
 ---
-termino: "Wampo"
-definicion: "Embarcación tradicional mapuche, similar a una canoa, tallada en un solo tronco de árbol. Es un símbolo clave de la identidad Lafkenche (gente del lago/mar)."
+palabra: "Wampo"
+significado: "Embarcación tradicional mapuche, similar a una canoa, tallada en un solo tronco de árbol. Es un símbolo clave de la identidad Lafkenche (gente del lago/mar)."
 categoria: "Artesania"
 ---
 
