@@ -3,11 +3,11 @@ name: CI - Astro Build Check (para Dev)
 on:
   # Se ejecuta cuando se crea una pull request
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "develop" ]
     
   # Se ejecuta cuando se hace push o merge
   push:
-    branches: [ "dev" ]
+    branches: [ "develop" ]
 
   # Permite ejecución manual
   workflow_dispatch:
