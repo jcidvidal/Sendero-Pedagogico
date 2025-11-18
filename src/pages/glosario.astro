@@ -1,0 +1,118 @@
+---
+// ---- src/pages/glosario.astro ----
+
+// 1. Importamos el Layout
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// 2. Obtenemos las entradas (¡Ahora esto sí funciona!)
+const allPalabrasEntries = await getCollection('glosario');
+allPalabrasEntries.sort((a, b) => a.data.palabra.localeCompare(b.data.palabra));
+
+// 3. Renderizamos el contenido (¡Y esto también funciona!)
+const allPalabras = await Promise.all(
+  allPalabrasEntries.map(async (item) => {
+    const { Content } = await item.render();
+    return {
+      data: item.data,
+      Content: Content,
+    };
+  })
+);
+---
+
+<Layout title="Glosario - Sendero Pedagógico">
+
+  <section class="relative bg-gradient-to-br from-emerald-900 via-green-800 to-amber-800 py-20 overflow-hidden">
+    <div class="absolute top-0 left-0 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+    <div class="absolute top-0 right-0 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+    <div class="absolute -bottom-8 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+    
+    <div class="relative container mx-auto px-4 text-center text-white">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6 font-playfair">Glosario Mapuche</h1>
+      <div class="w-24 h-1 bg-amber-400 mx-auto mb-6"></div>
+      <p class="text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
+        Conoce los términos y conceptos de nuestra cultura
+      </p>
+    </div>
+  </section>
+
+  <main class="container mx-auto px-4 py-16">
+    {allPalabras.length > 0 ? (
+      <div class="max-w-6xl mx-auto">
+        {(() => {
+          const categorias = [...new Set(allPalabras.map(item => item.data.categoria).filter(Boolean))];
+          return categorias.length > 0 ? (
+            <div class="flex flex-wrap gap-2 mb-8 justify-center">
+              <button class="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+                Todos
+              </button>
+              {categorias.map(categoria => (
+                <button class="bg-gray-200 text-gray-700 hover:bg-gray-300 px-4 py-2 rounded-full text-sm font-medium transition-colors">
+                  {categoria}
+                </button>
+              ))}
+            </div>
+          ) : null;
+        })()}
+
+        <div class="grid md:grid-cols-2 gap-6">
+          {allPalabras.map((item) => (
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all duration-300 group">
+              <div class="flex items-start mb-4">
+                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mr-4 shadow-lg flex-shrink-0">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="text-2xl font-bold text-gray-800 mb-2 font-playfair group-hover:text-green-600 transition-colors">
+                    {item.data.palabra}
+                  </h2>
+                  {item.data.categoria && (
+                    <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mb-2">
+                      {item.data.categoria}
+                    </span>
+                  )}
+                  <p class="text-gray-700 text-lg font-medium">
+                    {item.data.significado}
+                  </p>
+                </div>
+              </div>
+              
+              {/* Contenido adicional en Markdown */}
+              <div class="prose prose-gray max-w-none text-gray-600 border-t border-gray-100 pt-4">
+                <item.Content />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : (
+      <div class="text-center py-16">
+        <div class="max-w-md mx-auto">
+          <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Próximamente</h3>
+          <p class="text-gray-600">Estamos construyendo nuestro glosario de términos mapuche.</p>
+        </div>
+      </div>
+    )}
+  </main>
+
+  <section class="py-16 bg-gradient-to-br from-green-50 to-amber-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6 font-playfair">Sobre nuestro idioma</h2>
+        <p class="text-lg text-gray-600 leading-relaxed">
+          El Mapuzugun es la lengua del pueblo Mapuche, que significa "habla de la tierra". 
+          Cada palabra contiene en su significado la cosmovisión y relación profunda con la naturaleza.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</Layout>

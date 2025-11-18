@@ -1,0 +1,51 @@
+---
+// src/components/Footer.astro
+---
+
+<footer class="bg-green-800 text-white py-12 mt-16">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Logo y descripción -->
+      <div class="col-span-1">
+        <h3 class="text-2xl font-bold font-playfair mb-4">Sendero Pedagógico</h3>
+        <p class="text-green-100 leading-relaxed">
+          Un espacio educativo que conecta a la comunidad con el territorio, la cultura y la espiritualidad mapuche.
+        </p>
+      </div>
+
+      <!-- Enlaces rápidos -->
+      <div class="col-span-1">
+        <h4 class="text-lg font-semibold mb-4">Enlaces Rápidos</h4>
+        <ul class="space-y-2">
+          <li><a href="/" class="text-green-100 hover:text-white transition-colors">Inicio</a></li>
+          <li><a href="/quienes-somos" class="text-green-100 hover:text-white transition-colors">Quiénes Somos</a></li>
+          <li><a href="/historias" class="text-green-100 hover:text-white transition-colors">Historias</a></li>
+          <li><a href="/glosario" class="text-green-100 hover:text-white transition-colors">Glosario</a></li>
+          <li><a href="/normas" class="text-green-100 hover:text-white transition-colors">Normas</a></li>
+        </ul>
+      </div>
+
+      <!-- Información de contacto -->
+      <div class="col-span-1">
+        <h4 class="text-lg font-semibold mb-4">Contacto</h4>
+        <div class="space-y-2 text-green-100">
+          <p>✉️ info@senderopedagogico.cl</p>
+          <p>📞 +56 9 1234 5678</p>
+          <p>📍 Región de La Araucanía, Chile</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Línea divisoria -->
+    <div class="border-t border-green-700 mt-8 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-green-200 text-sm">
+          &copy; 2024 Sendero Pedagógico. Todos los derechos reservados.
+        </p>
+        <p class="text-green-200 text-sm mt-2 md:mt-0">
+          Construido con respeto y gratitud hacia el territorio mapuche.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
