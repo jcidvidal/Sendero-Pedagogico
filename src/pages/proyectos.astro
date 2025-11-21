@@ -1,38 +1,81 @@
 ---
-import Header from '../components/Header.astro';
-import '../styles/global.css';
+// Importamos el layout que usamos en el resto de las páginas
+import Layout from '../layouts/Layout.astro'; 
+
+const pageTitle = "Proyectos de Innovación";
+// La Bandurria es el símbolo de la escuela Ruca Raqui ("Casa de las bandurrias")
+const BANDURRIA_IMAGE_PATH = "/imagenes/proyectos/Bandurrias.png"; // Ruta confirmada
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyectos - Sendero Pedagógico</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-white font-inter">
-    <Header />
-
-    <main class="container mx-auto px-4 py-16">
-      <h1 class="text-4xl font-bold text-center text-gray-800 mb-8 font-playfair">Proyectos</h1>
-      <div class="max-w-3xl mx-auto text-lg text-gray-600">
-        <p class="mb-6">
-          Nuestros proyectos educativos y comunitarios...
-        </p>
-      </div>
-    </main>
-
-    <footer class="bg-gray-900 text-white py-12">
-      <div class="container mx-auto px-4 text-center">
-        <p class="text-lg mb-4 text-gray-300">Escuela Pública Ruca Raqui @ 2025</p>
-        <div class="flex justify-center space-x-8 text-sm text-gray-400">
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Eleven</a>
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Twelve</a>
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Thirteen</a>
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Fourteen</a>
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Fifteen</a>
+<Layout title={pageTitle}>
+    
+    {/* Sección Hero/Título - ESTILO COHERENTE */}
+    <section class="bg-gradient-to-r from-emerald-900 to-green-800 py-20">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4 font-playfair">
+                Innovación y Proyectos
+            </h1>
+            {/* Divisor en ámbar */}
+            <div class="w-24 h-1 bg-amber-400 mx-auto mb-6"></div>
+            <p class="text-xl max-w-4xl mx-auto opacity-90">
+                Llevamos el <em class="italic">mapuche kimün</em> a la vanguardia a través de iniciativas tecnológicas y educativas.
+            </p>
         </div>
-      </div>
-    </footer>
-  </body>
-</html>
+    </section>
+
+    {/* Sección del Proyecto Destacado: Mascotas Virtuales 3D */}
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                
+                {/* Columna de Contenido */}
+                <div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4 font-playfair">
+                        Proyecto Fillke Mogen Digital
+                    </h2>
+                    <div class="w-16 h-1 bg-green-600 mb-6"></div>
+                    
+                    <p class="text-lg text-gray-600 mb-4 leading-relaxed">
+                        Este proyecto de <b>ciencia guiada y significativa</b> nace de la necesidad de vincular a los estudiantes con el ecosistema local de la Isla Huapi, promoviendo el concepto de <b>Sustentabilidad</b> (<em class="italic">Fillke Mogen</em>) de manera interactiva.
+                    </p>
+
+                    {/* Lista formal sin emojis */}
+                    <ul class="list-disc list-inside text-gray-700 space-y-2 pl-4">
+                        <li><b>Objetivo:</b> Fomentar el cuidado ambiental a través de la realidad aumentada.</li>
+                        <li><b>Tecnología:</b> Modelado 3D y visualización interactiva.</li>
+                        <li><b>Sello Educativo:</b> Aprendizaje Profundo e Integral con Perspectiva Científica.</li>
+                    </ul>
+                </div>
+                
+                {/* Columna de Imagen (Mascota) */}
+                <div class="rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <img 
+                        src={BANDURRIA_IMAGE_PATH} 
+                        alt="Imagen de una Bandurria, ave emblemática de la Escuela Ruca Raqui." 
+                        class="w-full h-auto object-cover"
+                    />
+                    <div class="p-4 bg-green-50 text-center text-gray-700">
+                        <p class="text-sm font-semibold">La Bandurria: Símbolo de Ruca Raqui, nuestra "Casa de las bandurrias".</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    {/* Sección de CTA, copiada para coherencia */}
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4 font-playfair">¿Tienes una idea de proyecto?</h2>
+            <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                Trabajamos en colaboración con otras entidades educativas y comunitarias. Contáctanos si deseas colaborar en nuestra visión.
+            </p>
+            <a href="/contacto" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
+                Contactar al Equipo de Gestión
+            </a>
+        </div>
+    </section>
+
+</Layout>
+                       
+                       <!--   -->
