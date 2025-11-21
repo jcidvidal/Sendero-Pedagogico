@@ -1,25 +1,58 @@
 ---
-// src/pages/historias.astro
-
-import BaseLayout from '@/layouts/BaseLayout.astro';
-
+import Layout from '../layouts/Layout.astro'; // Ajustamos la ruta de importación si usas alias @
 // 1. Importa la función para obtener "collections"
 import { getCollection } from 'astro:content';
 
-// 2. Importa tu componente de tarjeta
-import StoryCard from '@/components/StoryCard.astro';
+// 2. Importa tu componente de tarjeta (Ajusta la ruta si es necesario, he usado la ruta absoluta por defecto)
+import StoryCard from '../components/StoryCard.astro';
 
 // 3. Obtén todas las "historias" de la carpeta 'src/content/historias'
 const allHistorias = await getCollection('historias');
+const pageTitle = "Historias y Relatos del Sendero";
 ---
-<BaseLayout title="Historias">
-  <div class="container mx-auto p-4">
-    <h1 class="text-4xl font-bold text-gray-900 mb-8">Nuestras Historias</h1>
+<Layout title={pageTitle}>
+    
+    {/* Sección Hero/Título - ESTILO COHERENTE CON QUIÉNES SOMOS */}
+    <section class="bg-gradient-to-r from-emerald-900 to-green-800 py-20">
+        <div class="container mx-auto px-4 text-center text-white">
+            <h1 class="text-5xl md:text-6xl font-bold mb-4 font-playfair">
+                Historias y Relatos
+            </h1>
+            {/* Divisor en ámbar */}
+            <div class="w-24 h-1 bg-amber-400 mx-auto mb-6"></div>
+            <p class="text-xl max-w-4xl mx-auto opacity-90">
+                Conoce las voces del territorio, los saberes ancestrales y las vivencias de la comunidad en el sendero pedagógico.
+            </p>
+        </div>
+    </section>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {allHistorias.map(historia => (
-        <StoryCard historia={historia} />
-      ))}
-    </div>
-  </div>
-</BaseLayout>
+    {/* Sección de Contenido - Coherente con espaciado del sitio */}
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 font-playfair">
+                    Voces y Experiencias
+                </h2>
+                {/* Divisor pequeño en verde */}
+                <div class="w-16 h-1 bg-green-500 mx-auto"></div>
+            </div>
+
+            {/* Grid de Historias */}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {/* Si no hay historias, muestra un mensaje */}
+                {allHistorias.length === 0 ? (
+                    <p class="text-lg text-gray-600 col-span-full text-center py-10">
+                        Aún no hay historias publicadas. ¡Vuelve pronto!
+                    </p>
+                ) : (
+                    // Mapea las historias si existen
+                    allHistorias.map(historia => (
+                        <StoryCard historia={historia} />
+                    ))
+                )}
+            </div>
+        </div>
+    </section>
+
+</Layout>

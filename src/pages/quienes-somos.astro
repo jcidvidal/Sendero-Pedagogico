@@ -1,38 +1,221 @@
 ---
-import Header from '../components/Header.astro';
-import '../styles/global.css';
+// src/pages/quienes-somos.astro
+import Layout from "../layouts/Layout.astro";
+// Puedes usar un componente de Equipo más adelante si lo necesitas
+// import Equipo from '../components/Equipo.astro';
+
+const pageTitle = "Quiénes Somos - Sendero Pedagógico";
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiénes Somos - Sendero Pedagógico</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-white font-inter">
-    <Header />
+<Layout title={pageTitle}>
+  {/* Sección 1: Hero principal y Titular (COLORES OK) */}
+  <section class="bg-gradient-to-r from-emerald-900 to-green-800 py-20">
+    <div class="container mx-auto px-4 text-center text-white">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4 font-playfair">
+        Nuestra Institución y el Proyecto
+      </h1>
+      <div class="w-24 h-1 bg-amber-400 mx-auto mb-6"></div>
+      <p class="text-xl max-w-4xl mx-auto opacity-90">
+        Una visión educativa que integra el territorio, la identidad cultural
+        Mapuche Lafkenche y la ciencia para la formación integral.
+      </p>
+    </div>
+  </section>
 
-    <main class="container mx-auto px-4 py-16">
-      <h1 class="text-4xl font-bold text-center text-gray-800 mb-8 font-playfair">Quiénes Somos</h1>
-      <div class="max-w-3xl mx-auto text-lg text-gray-600">
-        <p class="mb-6">
-          Contenido sobre la escuela y el equipo...
-        </p>
-      </div>
-    </main>
+  {/* Sección 2: Historia y Fundamento de la Escuela Ruca Raqui */}
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        {/* Título de la sección */}
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-playfair">
+            Escuela Pública Ruca Raqui
+          </h2>
+          <div class="w-16 h-1 bg-amber-500 mx-auto mb-6"></div>
+        </div>
 
-    <footer class="bg-gray-900 text-white py-12">
-      <div class="container mx-auto px-4 text-center">
-        <p class="text-lg mb-4 text-gray-300">Escuela Pública Ruca Raqui @ 2025</p>
-        <div class="flex justify-center space-x-8 text-sm text-gray-400">
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Eleven</a>
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Twelve</a>
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Thirteen</a>
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Fourteen</a>
-          <a href="#" class="hover:text-green-300 transition-colors duration-300">Fifteen</a>
+        <div class="grid md:grid-cols-2 gap-10 items-start">
+          {/* Columna de Contexto e Historia */}
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">
+              Origen y Compromiso Territorial
+            </h3>
+            <p class="text-lg text-gray-600 mb-4 leading-relaxed">
+              La Escuela fue fundada el <b>16 de mayo de 1988</b> en la comunidad
+              de <b>Anüweyeco</b>, Isla Huapi, comuna de Saavedra. Su creación
+              responde a la necesidad de entregar educación formal en un sector
+              rural con una profunda <b>identidad mapuche</b>.
+            </p>
+            <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+              El nombre <b>Ruca Raqui</b>, que significa <b
+                >"Casa de las bandurrias"</b
+              >, simboliza la conexión esencial entre el espacio educativo, el
+              bosque circundante y el lago Budi, reflejando el compromiso de la
+              escuela con la fauna y el ecosistema local.
+            </p>
+            <blockquote
+              class="border-l-4 border-green-600 pl-6 py-3 bg-green-50 text-gray-700 italic rounded-tr-xl rounded-br-xl"
+            >
+              "Wiño choyürayiletuy taiñ kimün"
+              <p class="text-sm mt-2 text-gray-500 font-medium">
+                Volverá a brotar nuestro saber
+              </p>
+            </blockquote>
+          </div>
+
+          {/* Columna de Propósito/Sello */}
+          <div
+            class="bg-gradient-to-br from-green-50 to-amber-50 rounded-2xl p-8 border border-green-100 shadow-lg"
+          >
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 font-playfair">
+              Propósito y Filosofía
+            </h3>
+            <p class="text-gray-600 mb-4 leading-relaxed">
+              Nuestra misión es formar personas íntegras inspiradas en el <em
+                class="italic">mapuche kimün</em
+              >, promoviendo el desarrollo personal y comunitario basado en la
+              autonomía, responsabilidad y el respeto mutuo.
+            </p>
+            <p class="text-gray-600 leading-relaxed">
+              Integramos los principios fundamentales del <b
+                ><em class="italic">Az Mapuche</em></b
+              > (formación de la persona), el <b
+                ><em class="italic">Fillke Mogen</em></b
+              > (convivencia armónica y biodiversidad) y el <b
+                ><em class="italic">Küme Mogen</em></b
+              > (el Buen Vivir), como pilares de nuestro quehacer pedagógico.
+            </p>
+            <div class="mt-6 text-right">
+              <img
+                src="/imagenes/quienesSomos/imgEscuela.jpeg"
+                alt="Representación de la identidad cultural Mapuche"
+                class="w-full h-auto rounded-xl shadow-md mt-4"
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
-  </body>
-</html>
+    </div>
+  </section>
+
+  {/* Sección 3: Los Sellos Educativos - Detalle */}
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-6xl mx-auto">
+        <h2
+          class="text-4xl font-bold text-center text-gray-800 mb-12 font-playfair"
+        >
+          Sellos Educativos Fundamentales
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          {/* Sello 1 */}
+          <div
+            class="p-6 bg-white rounded-xl shadow-md border-t-4 border-green-600 hover:shadow-xl transition-shadow"
+          >
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              1. Aprendizaje Integral con Perspectiva Científica
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              Fomentamos la creatividad, toma de decisiones y resolución de
+              problemas desde una <b
+                >perspectiva científica guiada y significativa</b
+              >, integrando de forma rigurosa los saberes ancestrales y
+              contemporáneos.
+            </p>
+          </div>
+
+          {/* Sello 2 */}
+          <div
+            class="p-6 bg-white rounded-xl shadow-md border-t-4 border-green-600 hover:shadow-xl transition-shadow"
+          >
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              2. Identidad Cultural Mapuche Lafkenche
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              Promovemos la autonomía, responsabilidad, respeto y la capacidad
+              de generar diálogos constructivos, basados en la <b
+                >identidad cultural Mapuche Lafkenche</b
+              >, logrando que estos valores sean herramientas para la vida.
+            </p>
+          </div>
+
+          {/* Sello 3 */}
+          <div
+            class="p-6 bg-white rounded-xl shadow-md border-t-4 border-green-600 hover:shadow-xl transition-shadow"
+          >
+            <h3 class="text-xl font-semibold text-gray-800 mb-3">
+              3. Sustentabilidad y Bienestar Integral
+            </h3>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              Con un foco en el <b><em class="italic">Küme Mogen</em></b> (Buen Vivir),
+              orientamos la formación para que los estudiantes aporten activamente
+              al bienestar social, cultural, ambiental y <b>sustentable</b> de su
+              comunidad y entorno.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Sección 4: El Equipo del Proyecto (SOLUCIÓN DE CONTRASTE) */}
+  <section
+    class="py-20 bg-gradient-to-br from-emerald-900 to-green-800 text-white"
+  >
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-6 font-playfair">
+          Equipo de Gestión y Colaboradores
+        </h2>
+        <div class="w-16 h-1 bg-amber-400 mx-auto mb-8"></div>
+
+        {
+          /* Caja de texto institucional: Ahora completamente blanca para MÁXIMA legibilidad. */
+        }
+        <div class="bg-white rounded-2xl p-8 shadow-xl text-center">
+          <p class="text-lg text-gray-800 mb-6 leading-relaxed">
+            El Sendero Pedagógico es un proyecto impulsado por el <b
+              >Equipo de Gestión y Convivencia Escolar de la Escuela Pública
+              Ruca Raqui</b
+            >, con la activa participación de la <b>Comunidad de Anüweyeco</b>.
+          </p>
+
+          <p class="text-sm italic text-gray-600">
+            Nuestra labor se fundamenta en la colaboración permanente con
+            educadores tradicionales, autoridades ancestrales del territorio
+            Lafkenche y diversas entidades académicas y culturales que aportan a
+            la visión transformadora del proyecto.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Sección de CTA */}
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4 font-playfair">
+        ¿Listo para visitarnos?
+      </h2>
+      <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+        Conoce nuestras normas y prepara tu visita al Sendero Pedagógico para
+        una experiencia respetuosa y enriquecedora.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/normas"
+          class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
+        >
+          Conocer Normas
+        </a>
+        <a
+          href="/visitar"
+          class="border border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
+        >
+          Planificar Visita
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
