@@ -1,162 +1,222 @@
 ---
-// ----src/pages/index.astro ----
-
-// 1. Importamos la plantilla
+// src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
-
-// 2. NO necesitamos importar Header, Footer, ni global.css
-//    porque ya están en el Layout.
+import Header from '../components/Header.astro'; // Asegúrate de que Layout ya lo tenga, si no, quita esta línea.
 ---
 
 <Layout title="Sendero Pedagógico - Escuela Pública Ruca Raqui">
 
-  <section class="relative bg-gradient-to-br from-emerald-900 via-green-800 to-amber-800 py-20 overflow-hidden">
-    <div class="absolute top-0 left-0 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-    <div class="absolute top-0 right-0 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-    <div class="absolute -bottom-8 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+  {/* --- 1. HERO SECTION PREMIUM --- */}
+  <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
     
-    <div class="relative container mx-auto px-4 text-center text-white">
-      <h1 class="text-5xl md:text-6xl font-bold mb-6 font-playfair">Sendero Pedagógico</h1>
-      <div class="w-24 h-1 bg-amber-400 mx-auto mb-6"></div>
-      <p class="text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
-        "Wiño kimtuayin tañi rüpü, küll küll rüpül, mawizantu-menoko"
-      </p>
-      <p class="text-lg md:text-xl mt-4 opacity-90 italic">
-        Volvamos a conocer nuestro sendero-camino, bosque-humedal
-      </p>
-      <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/visitar" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
-          Cómo Visitar
-        </a>
-        <a href="/normas" class="border border-white hover:bg-white hover:text-green-800 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
-          Ver Normas
-        </a>
-      </div>
+    {/* A. Imagen de Fondo (Con efecto Parallax suave si quisieras, aquí fijo) */}
+    <div class="absolute inset-0 z-0">
+        <img 
+            src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop" 
+            alt="Bosque nativo y humedal" 
+            class="w-full h-full object-cover opacity-90"
+        />
+        {/* B. Overlay (Capa oscura para que se lea el texto) */}
+        <div class="absolute inset-0 bg-gradient-to-b from-green-950/60 via-stone-900/50 to-stone-900/90"></div>
+    </div>
+
+    {/* C. Contenido Principal */}
+    <div class="relative z-10 container mx-auto px-4 text-center mt-10">
+        
+        {/* Badge / Etiqueta superior */}
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-green-100 text-xs font-bold tracking-[0.2em] mb-8 shadow-lg">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            ESCUELA PÚBLICA RUCA RAQUI
+        </div>
+        
+        {/* Título Gigante */}
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 font-playfair tracking-tight leading-none drop-shadow-2xl">
+            Sendero <br class="md:hidden" />
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-200 via-white to-amber-100">
+                Pedagógico
+            </span>
+        </h1>
+        
+        {/* Cita en Mapudungun */}
+        <div class="max-w-3xl mx-auto mb-10">
+            <p class="text-xl md:text-3xl text-stone-200 font-light italic font-playfair leading-relaxed">
+                "Wiño kimtuayin tañi rüpü, küll küll rüpül,<br/> mawizantu-menoko"
+            </p>
+            <div class="w-24 h-1 bg-amber-500 mx-auto mt-6 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]"></div>
+            <p class="text-stone-300 mt-4 font-inter text-sm md:text-base tracking-wide uppercase opacity-80">
+                Volvamos a conocer nuestro sendero-camino, bosque-humedal
+            </p>
+        </div>
+        
+        {/* Botones de Acción */}
+        <div class="flex flex-col sm:flex-row gap-5 justify-center items-center">
+            <a href="/visitar" class="group relative px-8 py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-full transition-all shadow-xl hover:shadow-green-500/30 hover:-translate-y-1 overflow-hidden">
+                <span class="relative z-10 flex items-center gap-2">
+                    Planificar Visita
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </span>
+                {/* Brillo en el botón */}
+                <div class="absolute top-0 -left-full w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_1.5s_infinite]"></div>
+            </a>
+            
+            <a href="/historias" class="px-8 py-4 bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/30 text-white font-semibold rounded-full transition-all hover:-translate-y-1 hover:border-white/60">
+                Leer Historias
+            </a>
+        </div>
+    </div>
+
+    {/* D. Separador Cultural (Estilo Greca/Montaña) al final */}
+    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
+        <svg class="relative block w-[calc(100%+1.3px)] h-[60px] md:h-[100px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path>
+        </svg>
     </div>
   </section>
 
-  <section class="py-16 bg-white">
-    <div class="container mx-auto px-4">
+  {/* --- 2. SECCIÓN LA INSTITUCIÓN (Fondo Claro Texturizado) --- */}
+  <section class="py-24 bg-stone-50 relative">
+    <div class="container mx-auto px-4 relative z-10">
       <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-4xl font-bold text-gray-800 mb-4 font-playfair">Escuela Pública Ruca Raqui</h2>
-          <div class="w-16 h-1 bg-green-500 mx-auto mb-6"></div>
-          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-            Ubicada en la comunidad de Anüweyeco, Isla Huapi, comuna de Saavedra. 
-            Fundada el 16 de mayo de 1988 para entregar educación formal a niños y niñas 
-            del sector rural en un contexto de identidad mapuche profunda.
-          </p>
+        
+        {/* Encabezado de Sección */}
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-green-950 mb-4 font-playfair">Escuela Pública Ruca Raqui</h2>
+            <div class="flex justify-center items-center gap-2">
+                <span class="w-12 h-[1px] bg-green-800/30"></span>
+                <span class="text-green-700 text-lg">❖</span>
+                <span class="w-12 h-[1px] bg-green-800/30"></span>
+            </div>
+            <p class="text-lg text-stone-600 max-w-2xl mx-auto mt-6 leading-relaxed">
+                Fundada el 16 de mayo de 1988 en Anüweyeco, Isla Huapi. Un espacio donde la identidad mapuche y la educación formal se abrazan junto al Lago Budi.
+            </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h3 class="text-2xl font-semibold text-gray-800 mb-4 font-playfair">Nuestra Historia</h3>
-            <p class="text-gray-600 mb-4">
-              La escuela nació como respuesta a la necesidad de acceso a educación formal 
-              para los niños y niñas que habitaban la isla, en un contexto marcado por una 
-              identidad mapuche profunda y su cercanía con el lago Budi.
-            </p>
-            <p class="text-gray-600">
-              Su nombre honra la característica de la fauna que cobija: Ruca Raqui, 
-              "Casa de las bandurrias", evoca al ave que habita y anida en la conexión 
-              entre escuela, bosque y el lago Budi.
-            </p>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          {/* Texto Historia */}
+          <div class="space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-stone-100 hover:shadow-md transition-shadow">
+                <h3 class="text-2xl font-bold text-green-900 mb-3 font-playfair flex items-center gap-3">
+                    <span class="text-amber-500 text-3xl">✦</span> Nuestra Historia
+                </h3>
+                <p class="text-stone-600 leading-relaxed">
+                    Nacimos para dar respuesta a la necesidad educativa de la isla, honrando en nuestro nombre a la "Ruca Raqui" (Casa de las bandurrias), simbolizando la conexión entre escuela, bosque y lago.
+                </p>
+            </div>
           </div>
-          <div class="bg-gradient-to-br from-green-50 to-amber-50 rounded-2xl p-8 border border-green-100">
-            <h3 class="text-2xl font-semibold text-gray-800 mb-4 font-playfair">Nuestro Propósito</h3>
-            <p class="text-gray-600 mb-4">
-              Formar personas íntegras inspiradas en el <em>mapuche kimün</em>, con valores 
-              como el respeto, la responsabilidad, la solidaridad y la fortaleza espiritual.
-            </p>
-            <p class="text-gray-600">
-              Integramos los principios del <em>Az Mapuche</em> (formación de persona), 
-              el <em>Filike Mogen</em> (convivencia armónica) y el <em>Küme Mogen</em> (buen vivir).
-            </p>
+
+          {/* Tarjeta Propósito (Destacada) */}
+          <div class="bg-green-900 rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl transform md:rotate-1 hover:rotate-0 transition-transform duration-500">
+            {/* Decoración de fondo */}
+            <div class="absolute top-0 right-0 w-64 h-64 bg-green-800 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
+            
+            <div class="relative z-10">
+                <h3 class="text-3xl font-bold mb-6 font-playfair text-amber-300">Nuestro Propósito</h3>
+                <p class="text-green-100 mb-6 text-lg leading-relaxed">
+                Formar personas íntegras inspiradas en el <em class="text-white font-semibold not-italic">mapuche kimün</em>. Integramos los principios del:
+                </p>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3">
+                        <span class="bg-amber-400 text-green-900 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">✓</span>
+                        <span class="font-medium">Az Mapuche (Formación de persona)</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="bg-amber-400 text-green-900 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">✓</span>
+                        <span class="font-medium">Filike Mogen (Convivencia)</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="bg-amber-400 text-green-900 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">✓</span>
+                        <span class="font-medium">Küme Mogen (Buen vivir)</span>
+                    </li>
+                </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-16 bg-gray-50">
+  {/* --- 3. GALERÍA ENTORNO (Estilo Bento Grid) --- */}
+  <section class="py-24 bg-white">
     <div class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto text-center mb-12">
-        <h2 class="text-4xl font-bold text-gray-800 mb-4 font-playfair">Nuestro Entorno</h2>
-        <div class="w-16 h-1 bg-green-500 mx-auto mb-6"></div>
-        <p class="text-lg text-gray-600">
-          Conoce el hermoso territorio donde se desarrolla nuestro proyecto educativo
-        </p>
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-bold text-green-950 mb-4 font-playfair">Nuestro Entorno</h2>
+        <p class="text-stone-500">El territorio es nuestra aula principal</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        <div class="group relative overflow-hidden rounded-2xl shadow-lg">
-          <div class="bg-gradient-to-br from-green-200 to-amber-200 h-64 flex items-center justify-center">
-            <span class="text-gray-600 font-semibold">[Foto del Sendero]</span>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto h-auto md:h-[500px]">
+        {/* Imagen Grande (Izquierda) */}
+        <div class="group relative md:col-span-2 md:row-span-2 overflow-hidden rounded-3xl shadow-lg">
+          <div class="bg-stone-200 w-full h-full absolute inset-0">
+             {/* Poner aquí <img src="..." class="w-full h-full object-cover" /> */}
+             <div class="w-full h-full flex items-center justify-center bg-green-100 text-green-800/30 font-bold text-2xl">FOTO SENDERO</div>
           </div>
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="text-white font-semibold">Sendero Pedagógico</span>
-          </div>
-        </div>
-
-        <div class="group relative overflow-hidden rounded-2xl shadow-lg">
-          <div class="bg-gradient-to-br from-amber-200 to-green-200 h-64 flex items-center justify-center">
-            <span class="text-gray-600 font-semibold">[Foto del Humedal]</span>
-          </div>
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="text-white font-semibold">Humedal</span>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+          <div class="absolute bottom-8 left-8 text-white">
+            <h3 class="text-3xl font-playfair font-bold">El Sendero</h3>
+            <p class="text-green-200">Conexión espiritual y educativa</p>
           </div>
         </div>
 
-        <div class="group relative overflow-hidden rounded-2xl shadow-lg">
-          <div class="bg-gradient-to-br from-emerald-200 to-amber-200 h-64 flex items-center justify-center">
-            <span class="text-gray-600 font-semibold">[Foto de Actividades]</span>
+        {/* Imagen Pequeña 1 (Derecha Arriba) */}
+        <div class="group relative overflow-hidden rounded-3xl shadow-lg h-64 md:h-auto">
+          <div class="bg-stone-200 w-full h-full absolute inset-0">
+            <div class="w-full h-full flex items-center justify-center bg-amber-100 text-amber-800/30 font-bold text-xl">FOTO HUMEDAL</div>
           </div>
-          <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <span class="text-white font-semibold">Aprendizaje en la Naturaleza</span>
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+          <span class="absolute bottom-4 left-4 text-white font-bold text-lg">El Humedal</span>
+        </div>
+
+        {/* Imagen Pequeña 2 (Derecha Abajo) */}
+        <div class="group relative overflow-hidden rounded-3xl shadow-lg h-64 md:h-auto">
+          <div class="bg-stone-200 w-full h-full absolute inset-0">
+            <div class="w-full h-full flex items-center justify-center bg-blue-100 text-blue-800/30 font-bold text-xl">FOTO ACTIVIDAD</div>
           </div>
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+          <span class="absolute bottom-4 left-4 text-white font-bold text-lg">Aprendizaje Vivo</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="vision" class="py-16 bg-gradient-to-br from-green-800 to-emerald-900 text-white">
-    <div class="container mx-auto px-4">
+  {/* --- 4. SECCIÓN VISIÓN (Con fondo oscuro para contraste) --- */}
+  <section id="vision" class="py-24 bg-stone-900 text-white relative overflow-hidden">
+    {/* Patrón de fondo */}
+    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')]"></div>
+    
+    <div class="container mx-auto px-4 relative z-10">
       <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-6 font-playfair">Nuestra Visión</h2>
-        <div class="w-16 h-1 bg-amber-400 mx-auto mb-8"></div>
-        <div class="bg-white bg-opacity-10 rounded-2xl p-8 backdrop-blur-sm">
-          <p class="text-gray-600">
-            "Aspiramos a ser reconocidos como una comunidad educativa de calidad, inclusiva e intercultural 
+        <h2 class="text-4xl font-bold mb-8 font-playfair text-amber-400">Nuestra Visión</h2>
+        
+        <div class="bg-white/5 border border-white/10 rounded-[2rem] p-10 md:p-14 backdrop-blur-sm relative">
+          <span class="text-6xl text-green-500 absolute -top-6 -left-4 font-serif opacity-50">“</span>
+          <p class="text-xl md:text-2xl leading-relaxed font-light text-stone-200">
+            Aspiramos a ser reconocidos como una comunidad educativa de calidad, inclusiva e intercultural 
             en el contexto rural de la comuna de Saavedra, fundamentando nuestro quehacer en los principios 
-            del <em>Az Mapuche</em>, el <em>Küme Mogen</em> y el <em>Filike Mogen</em>."
+            del <span class="text-amber-400 font-normal">Az Mapuche</span>, el <span class="text-amber-400 font-normal">Küme Mogen</span> y el <span class="text-amber-400 font-normal">Filike Mogen</span>.
           </p>
-          <p class="text-gray-600">
-            Integramos saberes ancestrales y contemporáneos para formar estudiantes integrales, 
-            capaces de comprender y transformar su entorno a través del diálogo entre culturas y conocimientos.
-          </p>
+          <span class="text-6xl text-green-500 absolute -bottom-10 -right-4 font-serif opacity-50 transform rotate-180">“</span>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="py-16 bg-white">
+  {/* --- 5. CALL TO ACTION FINAL --- */}
+  <section class="py-24 bg-green-50">
     <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4 font-playfair">¿Listo para visitarnos?</h2>
-      <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-        Conoce nuestras normas y prepara tu visita al Sendero Pedagógico para una experiencia respetuosa y enriquecedora.
+      <h2 class="text-3xl md:text-4xl font-bold text-green-900 mb-6 font-playfair">¿Listo para conectar con el territorio?</h2>
+      <p class="text-lg text-stone-600 mb-10 max-w-2xl mx-auto">
+        Antes de visitarnos, te invitamos a conocer nuestras normas para asegurar una experiencia respetuosa con el entorno y la comunidad.
       </p>
+      
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/normas" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
-          Conocer Normas
+        <a href="/normas" class="px-8 py-4 bg-green-700 hover:bg-green-800 text-white font-bold rounded-xl transition-all shadow-lg hover:shadow-green-900/20 hover:-translate-y-1">
+          Leer Normas del Sendero
         </a>
-        <a href="/visitar" class="border border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
-          Planificar Visita
-        </a>
-        <a href="/proyectos" class="border border-green-600 text-green-600 hover:bg-green-600 hover:text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300">
-          Nuestros Proyectos
+        <a href="/visitar" class="px-8 py-4 bg-white border border-green-200 text-green-800 font-bold rounded-xl hover:bg-green-50 transition-colors">
+          Información de Visita
         </a>
       </div>
     </div>
   </section>
 
-  </Layout>
+</Layout>

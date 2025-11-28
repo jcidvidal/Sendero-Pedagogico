@@ -1,163 +1,37 @@
 ---
 // src/pages/historias/[slug].astro
-import { getCollection, type CollectionEntry } from 'astro:content';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro'; // 👈 NUEVO IMPORT
-import '../../styles/global.css';
+import Layout from '../../layouts/Layout.astro';
+import { supabase } from '../../lib/supabase';
 
-type Props = {
-  historia: CollectionEntry<'historias'>;
-}
-
-export async function getStaticPaths() {
-  const historias = await getCollection('historias');
-  
-  return historias.map((historia: CollectionEntry<'historias'>) => ({
-    params: { slug: historia.slug },
-    props: { historia },
-  }));
-}
-
+// 1. Obtener el slug de la URL
 const { slug } = Astro.params;
-const { historia } = Astro.props as Props;
 
-if (!historia) {
+// 2. Buscar en la base de datos
+const { data: historia, error } = await supabase
+  .from('historias')
+  .select('*')
+  .eq('slug', slug)
+  .single(); // .single() devuelve un solo objeto, no un array
+
+// 3. Manejar si no existe (404)
+if (!historia || error) {
   return Astro.redirect('/404');
 }
-
-const { Content } = await historia.render();
 ---
 
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>{historia.data.title} | Sendero Pedagógico</title>
-  <style>
-    body { 
-      font-family: sans-serif; 
-      margin: 0; 
-      padding: 0; 
-      background-color: #f9fafb; 
-    }
-  </style>
-</head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
-  <!-- Header -->
-  <Header />
-
-  <!-- Contenido principal -->
-  <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
-    <!-- Botón volver -->
-    <a href="/historias" class="inline-flex items-center gap-2 text-green-600 hover:text-green-800 mb-8 transition-colors font-semibold group">
-      <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-      </svg>
-      Volver a todas las historias
-    </a>
-
-    <!-- Portada -->
-    {historia.data.cover && (
-      <img 
-        src={historia.data.cover} 
-        alt={`Portada: ${historia.data.title}`}
-        class="w-full h-64 md:h-80 object-cover rounded-2xl mb-8 shadow-lg"
-      />
-    )}
+<Layout title={historia.titulo}>
+  <main class="container mx-auto px-4 py-16 max-w-3xl">
+    <h1 class="text-5xl font-playfair font-bold text-green-900 mb-6">{historia.titulo}</h1>
     
-    <!-- Título -->
-    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 font-playfair leading-tight">
-      {historia.data.title}
-    </h1>
-    
-    <!-- Resumen -->
-    <p class="text-xl text-gray-600 italic mb-8 leading-relaxed border-l-4 border-green-500 pl-4">
-      {historia.data.resumen}
-    </p>
-    
-    <!-- Meta información -->
-    <div class="bg-gray-50 rounded-xl p-6 mb-8 border border-gray-200">
-      <div class="flex flex-wrap gap-4 text-sm md:text-base">
-        <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-          </svg>
-          <span><strong class="text-gray-700">Fecha:</strong> {historia.data.fecha}</span>
-        </div>
-        {historia.data.creditos && (
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-            </svg>
-            <span><strong class="text-gray-700">Créditos:</strong> {historia.data.creditos}</span>
-          </div>
-        )}
-      </div>
+    <div class="text-gray-500 mb-8 flex gap-4 text-sm">
+        <span>{new Date(historia.fecha).toLocaleDateString()}</span>
+        <span>Autoria: {historia.creditos}</span>
     </div>
-    
-    <!-- Tags -->
-    {historia.data.tags && historia.data.tags.length > 0 && (
-      <div class="flex flex-wrap gap-2 mb-8">
-        {historia.data.tags.map((tag: string) => (
-          <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium border border-green-200">
-            {tag}
-          </span>
-        ))}
-      </div>
-    )}
-    
-    <!-- Contenido -->
-    <article class="prose prose-lg max-w-none">
-      <Content />
+
+    <article class="prose prose-lg text-gray-700 leading-relaxed whitespace-pre-wrap">
+        {historia.contenido}
     </article>
+    
+    <a href="/historias" class="inline-block mt-12 text-green-700 hover:underline">← Volver a historias</a>
   </main>
-
-  <!-- Footer -->
-  <Footer /> <!-- 👈 NUEVO FOOTER -->
-</body>
-</html>
-
-<style>
-  .prose {
-    color: #374151;
-    line-height: 1.75;
-  }
-  
-  .prose h2 {
-    color: #2c5530;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    font-family: var(--font-family-playfair);
-  }
-  
-  .prose h3 {
-    color: #4a7c59;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    font-weight: 600;
-  }
-  
-  .prose strong {
-    color: #2c5530;
-    font-weight: 600;
-  }
-  
-  .prose img {
-    border-radius: 12px;
-    margin: 2rem 0;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  }
-  
-  .prose p {
-    margin-bottom: 1.5rem;
-  }
-  
-  .prose blockquote {
-    border-left-color: #10b981;
-    background-color: #f0fdf4;
-    padding: 1.5rem;
-    border-radius: 8px;
-    font-style: italic;
-  }
-</style>
+</Layout>
