@@ -1,151 +1,112 @@
 ---
-// ---- ESTE ES EL CÓDIGO FINAL PARA: src/pages/visitar.astro ----
-
-// 1. **IMPORTACIÓN CORREGIDA**: Verifica que esta ruta sea correcta para tu proyecto.
-// Si esta falla, prueba con: import Layout from '@/layouts/Layout.astro';
-import Layout from "../layouts/Layout.astro";
-
-// Definimos la ruta de la imagen del predio
-const PREDIO_IMAGE_PATH = "/imagenes/Predio de Escuela.jpg";
+// src/pages/visitar.astro
+import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Visitar - Sendero Pedagógico">
-  <section
-    class="relative bg-gradient-to-br from-emerald-900 via-green-800 to-amber-800 py-20 overflow-hidden"
-  >
-    {/* Elementos de diseño de fondo */}
-    <div
-      class="absolute top-0 left-0 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"
-    >
-    </div>
-    <div
-      class="absolute top-0 right-0 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"
-    >
-    </div>
-    <div
-      class="absolute -bottom-8 left-20 w-72 h-72 bg-emerald-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"
-    >
-    </div>
+<Layout title="Planifica tu Visita">
 
-    <div class="relative container mx-auto px-4 text-center text-white">
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-playfair">
-        Planifica tu Visita
-      </h1>
-      <div class="w-24 h-1 bg-amber-400 mx-auto mb-6"></div>
-      <p class="text-xl md:text-2xl max-w-2xl mx-auto leading-relaxed">
-        Te invitamos a conocer el entorno de la Escuela Pública Ruca Raqui y el
-        Sendero Pedagógico.
-      </p>
-    </div>
-  </section>
-
-  <main class="py-16">
-    {/* SECCIÓN DE DETALLES: INFORMACIÓN Y CÓMO LLEGAR */}
-    <section class="container mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-12">
-          <div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-6 font-playfair">
-              Información General
-            </h2>
-            <div class="space-y-6">
-              <div>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                  Horarios de Visita
-                </h3>
-                <p class="text-gray-600">Lunes a Viernes: 9:00 - 17:00</p>
-                <p class="text-gray-600">Sábados: 10:00 - 14:00</p>
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                  Duración del Recorrido
-                </h3>
-                <p class="text-gray-600">Aproximadamente 2 horas</p>
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                  Contacto
-                </h3>
-                <p class="text-gray-600">Teléfono: +1234567890</p>
-                <p class="text-gray-600">Email: contacto@sendero.edu</p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h2 class="text-3xl font-bold text-gray-800 mb-6 font-playfair">
-              Cómo Llegar
-            </h2>
-            <div class="space-y-6">
-              <div>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                  Ubicación
-                </h3>
-                <p class="text-gray-600">
-                  Escuela Pública Ruca Raqui, Isla Huapi, Comuna de Saavedra
-                </p>
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                  Instrucciones
-                </h3>
-                <p class="text-gray-600">
-                  Desde [punto de referencia], tomar [ruta] hasta llegar a
-                  [instrucciones específicas].
-                </p>
-              </div>
-              <div>
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">
-                  Recomendaciones
-                </h3>
-                <ul class="text-gray-600 list-disc list-inside space-y-2">
-                  <li>
-                    Usar ropa cómoda y calzado adecuado para caminata/terreno
-                    rural.
-                  </li>
-                  <li>Llevar protección solar, gorro y agua.</li>
-                  <li>
-                    Consultar y <b>respetar las normas del sendero</b> antes de su
-                    llegada.
-                  </li>
-                  <br>
-                </ul>
-              </div>
-            </div>
-          </div>
+    {/* HERO */}
+    <section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-green-950/70"></div>
         </div>
-
-        {/* SECCIÓN: IMAGEN DEL PREDIO */}
-        <section class="container mx-auto px-4 mb-16">
-          <div class="max-w-6xl mx-auto">
-            <img
-              src={"imagenes/visitar/Predio de Escuela.jpg"}
-              alt="Vista panorámica del Predio de la Escuela Ruca Raqui en Isla Huapi"
-              class="w-full h-auto object-cover rounded-2xl shadow-xl border border-gray-100"
-            />
-            <p class="text-center text-sm text-gray-500 mt-3 italic">
-              Entorno natural que rodea la Escuela Pública Ruca Raqui, base del
-              Sendero Pedagógico.
-            </p>
-          </div>
-        </section>
-
-        <div class="text-center mt-16 py-8 bg-gray-50 rounded-xl">
-          <h2 class="text-3xl font-bold text-gray-800 mb-4 font-playfair">
-            Revisa nuestras Normas
-          </h2>
-          <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Asegúrate de conocer nuestras normas antes de tu visita para una
-            experiencia respetuosa y enriquecedora con el territorio.
-          </p>
-          <a
-            href="/normas"
-            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-300"
-          >
-            Ver Normas del Sendero
-          </a>
+        <div class="relative z-10 text-center text-white container mx-auto px-4">
+            <h1 class="text-5xl md:text-7xl font-bold font-playfair mb-4">Ven al Sendero</h1>
+            <p class="text-xl opacity-90 font-light">Escuela Pública Ruca Raqui, Isla Huapi</p>
         </div>
-      </div>
+        {/* Separador */}
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
+            <svg class="relative block w-[calc(100%+1.3px)] h-[50px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path>
+            </svg>
+        </div>
     </section>
-  </main>
+
+    <main class="bg-stone-50 py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+                
+                {/* COLUMNA IZQUIERDA: Info Práctica */}
+                <div class="space-y-8">
+                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
+                        <h2 class="text-3xl font-bold text-green-900 font-playfair mb-6 flex items-center gap-3">
+                            <span class="text-amber-500">📍</span> Cómo Llegar
+                        </h2>
+                        <p class="text-stone-600 mb-6 leading-relaxed">
+                            Nos ubicamos en la comunidad de Anüweyeco, en el corazón de Isla Huapi, comuna de Saavedra. El acceso es a través de un entorno privilegiado rodeado por el Lago Budi.
+                        </p>
+                        <div class="aspect-video bg-gray-200 rounded-xl overflow-hidden relative group">
+                            {/* Aquí iría el iframe de Google Maps real */}
+                            <div class="absolute inset-0 flex items-center justify-center bg-stone-200 text-stone-400 font-bold group-hover:bg-stone-300 transition-colors cursor-pointer">
+                                MAPA INTERACTIVO
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-900 text-white p-8 rounded-[2rem] shadow-lg relative overflow-hidden">
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-bold font-playfair mb-4">Horarios de Visita</h3>
+                            <ul class="space-y-4">
+                                <li class="flex justify-between border-b border-green-700 pb-2">
+                                    <span>Lunes a Viernes</span>
+                                    <span class="font-bold text-amber-300">09:00 - 17:00</span>
+                                </li>
+                                <li class="flex justify-between border-b border-green-700 pb-2">
+                                    <span>Sábados</span>
+                                    <span class="font-bold text-amber-300">10:00 - 14:00</span>
+                                </li>
+                                <li class="flex justify-between text-green-300 pt-2">
+                                    <span>Domingos y Festivos</span>
+                                    <span>Cerrado</span>
+                                </li>
+                            </ul>
+                        </div>
+                        {/* Decoración */}
+                        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-green-800 rounded-full blur-3xl opacity-50"></div>
+                    </div>
+                </div>
+
+                {/* COLUMNA DERECHA: Recomendaciones */}
+                <div class="space-y-8">
+                    <h2 class="text-4xl font-bold text-green-900 font-playfair mb-8">Prepara tu mochila</h2>
+                    
+                    <div class="grid gap-6">
+                        {/* Item 1 */}
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-100 hover:border-green-200 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-2xl flex-shrink-0">👟</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-green-900">Calzado Cómodo</h3>
+                                <p class="text-stone-500 text-sm">El sendero tiene tramos de tierra y humedad. Usa zapatillas con buen agarre.</p>
+                            </div>
+                        </div>
+                        {/* Item 2 */}
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-100 hover:border-green-200 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-2xl flex-shrink-0">💧</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-green-900">Hidratación</h3>
+                                <p class="text-stone-500 text-sm">Lleva tu propia botella de agua reutilizable. ¡Evitamos el plástico!</p>
+                            </div>
+                        </div>
+                        {/* Item 3 */}
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-100 hover:border-green-200 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-2xl flex-shrink-0">📸</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-green-900">Fotografía Responsable</h3>
+                                <p class="text-stone-500 text-sm">Puedes tomar fotos, pero pide permiso si vas a fotografiar a personas de la comunidad.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-100 p-6 rounded-2xl mt-8">
+                        <p class="text-amber-900 italic font-playfair text-lg text-center">
+                            "Recuerda que entras a un espacio de aprendizaje y naturaleza viva. Tu respeto es la mejor ofrenda."
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
 </Layout>

@@ -1,0 +1,7 @@
+---
+// src/pages/logout.astro
+Astro.cookies.delete("sb-access-token", { path: "/" });
+Astro.cookies.delete("sb-refresh-token", { path: "/" });
+
+return Astro.redirect("/");
+---
