@@ -11,14 +11,10 @@ const pageTitle = "Quiénes Somos - Sendero Pedagógico";
   {/* --- 1. HERO SECTION PREMIUM --- */}
   <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
     <div class="absolute inset-0">
-        {/* Usamos una imagen de fondo (puedes cambiarla por una foto real de la escuela) */}
-        <Image 
-            src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2000&auto=format&fit=crop" 
-            inferSize={true}
-            alt="Educación Rural"
-            format="avif"
-            decoding="async"
-            loading="lazy"
+        {/* Corrección de ruta: quitamos 'public' */}
+        <img 
+            src="/imagenes/quienes/quienes.jpg" 
+            alt="Educación Rural" 
             class="w-full h-full object-cover opacity-90"
         />
         <div class="absolute inset-0 bg-gradient-to-b from-green-950/90 via-green-900/80 to-stone-50"></div>
@@ -45,7 +41,7 @@ const pageTitle = "Quiénes Somos - Sendero Pedagógico";
     </div>
   </section>
 
-  {/* --- 2. HISTORIA Y FUNDAMENTO (Layout Asimétrico) --- */}
+  {/* --- 2. HISTORIA Y FUNDAMENTO --- */}
   <section class="py-24 bg-stone-50">
     <div class="container mx-auto px-4">
       <div class="max-w-7xl mx-auto">
@@ -85,10 +81,13 @@ const pageTitle = "Quiénes Somos - Sendero Pedagógico";
                 </div>
             </div>
             
-            {/* Imagen Local (Manteniendo tu ruta original) */}
-            <div class="rounded-[2rem] overflow-hidden shadow-lg h-64 relative group">
-                 <Image
-                    src={IMG_ESCUELA}
+            {/* IMAGEN CLIQUEABLE (Lightbox Activado) */}
+            <div 
+                class="rounded-[2rem] overflow-hidden shadow-lg h-64 relative group cursor-zoom-in"
+                onclick="openModal('/imagenes/quienes/Patio.jpg', 'Escuela Ruca Raqui')"
+            >
+                 <img
+                    src="/imagenes/quienes/Patio.jpg"
                     alt="Escuela Ruca Raqui"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     inferSize={true}
@@ -96,14 +95,13 @@ const pageTitle = "Quiénes Somos - Sendero Pedagógico";
                     decoding="async"
                     loading="lazy"
                   />
-                  <div class="absolute inset-0 bg-gradient-to-t from-green-900/60 to-transparent"></div>
-                  <span class="absolute bottom-4 left-6 text-white font-bold text-lg">Nuestra Escuela</span>
+                  <div class="absolute inset-0 bg-gradient-to-t from-green-900/60 to-transparent pointer-events-none"></div>
+                  <span class="absolute bottom-4 left-6 text-white font-bold text-lg pointer-events-none">Nuestra Escuela</span>
             </div>
           </div>
 
-          {/* COLUMNA DERECHA: Tarjeta Propósito (Estilo Dark) */}
+          {/* COLUMNA DERECHA: Tarjeta Propósito */}
           <div class="bg-green-900 text-white rounded-[2.5rem] p-10 md:p-12 shadow-2xl relative overflow-hidden">
-            {/* Decoración de fondo */}
             <div class="absolute top-0 right-0 w-64 h-64 bg-green-800 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
             
             <div class="relative z-10">
@@ -152,7 +150,7 @@ const pageTitle = "Quiénes Somos - Sendero Pedagógico";
     </div>
   </section>
 
-  {/* --- 3. SELLOS EDUCATIVOS (Tarjetas Visuales) --- */}
+  {/* --- 3. SELLOS EDUCATIVOS --- */}
   <section class="py-24 bg-white">
     <div class="container mx-auto px-4">
       <div class="max-w-6xl mx-auto">
@@ -205,9 +203,8 @@ const pageTitle = "Quiénes Somos - Sendero Pedagógico";
     </div>
   </section>
 
-  {/* --- 4. EQUIPO DE GESTIÓN (Sección Oscura Texturizada) --- */}
+  {/* --- 4. EQUIPO DE GESTIÓN --- */}
   <section class="py-24 bg-stone-900 text-white relative overflow-hidden">
-     {/* Patrón de fondo */}
      <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
      
      <div class="container mx-auto px-4 relative z-10">
@@ -260,5 +257,64 @@ const pageTitle = "Quiénes Somos - Sendero Pedagógico";
       </div>
     </div>
   </section>
+
+  {/* --- COMPONENTE LIGHTBOX (MODAL) --- */}
+  <div id="imageModal" class="fixed inset-0 z-[60] hidden bg-black/90 backdrop-blur-sm transition-all duration-300 opacity-0" aria-hidden="true">
+    
+    {/* Botón cerrar */}
+    <button onclick="closeModal()" class="absolute top-6 right-6 text-white/70 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    {/* Contenedor de la imagen */}
+    <div class="flex items-center justify-center w-full h-full p-4" onclick="closeModal()">
+        <img id="modalImage" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl scale-95 transition-transform duration-300" onclick="event.stopPropagation()" />
+        
+        {/* Caption */}
+        <p id="modalCaption" class="absolute bottom-8 left-0 w-full text-center text-white/90 font-playfair text-xl pointer-events-none"></p>
+    </div>
+  </div>
+
+  {/* --- SCRIPT PARA EL MODAL --- */}
+  <script is:inline>
+    function openModal(src, alt) {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+
+        modalImg.src = src;
+        modalImg.alt = alt;
+        modalCaption.textContent = alt;
+
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            modalImg.classList.remove('scale-95');
+            modalImg.classList.add('scale-100');
+        }, 10);
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+
+        modal.classList.add('opacity-0');
+        modalImg.classList.remove('scale-100');
+        modalImg.classList.add('scale-95');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modalImg.src = ''; 
+        }, 300);
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            closeModal();
+        }
+    });
+  </script>
 
 </Layout>
