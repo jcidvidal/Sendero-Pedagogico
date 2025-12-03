@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
 import StoryCard from '../components/StoryCard.astro';
 
-// --- 1. VERIFICACIÓN DE ADMIN (SEGURIDAD) ---
+// --- 1. VERIFICACIÓN DE ADMIN ---
 const accessToken = Astro.cookies.get("sb-access-token");
 const refreshToken = Astro.cookies.get("sb-refresh-token");
 let isAdmin = false;
@@ -14,17 +14,12 @@ if (accessToken && refreshToken) {
     access_token: accessToken.value,
     refresh_token: refreshToken.value,
   });
-  
-  if (!error && data?.session) {
-    isAdmin = true;
-  }
+  if (!error && data?.session) isAdmin = true;
 }
 
-// --- 2. LÓGICA DEL SERVIDOR (POST - GUARDAR HISTORIA) ---
+// --- 2. LÓGICA DEL SERVIDOR (POST) ---
 if (Astro.request.method === "POST") {
-  if (!isAdmin) {
-    return new Response("No autorizado", { status: 403 });
-  }
+  if (!isAdmin) return new Response("No autorizado", { status: 403 });
 
   try {
     const formData = await Astro.request.formData();
@@ -35,15 +30,17 @@ if (Astro.request.method === "POST") {
     const creditos = formData.get("creditos")?.toString() || "";
     const fecha = formData.get("fecha")?.toString() || new Date().toISOString();
     
-    // --- SUBIDA DE IMAGEN ---
+    // Subida de Imagen
     const imagenFile = formData.get("imagen");
     let coverUrl = null;
 
     if (imagenFile && imagenFile instanceof File && imagenFile.size > 0) {
+        // Nombre único
         const fileExt = imagenFile.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
         const filePath = `historias/${fileName}`;
 
+        // Subir a Supabase
         const { error: uploadError } = await supabase.storage
             .from('imagenes')
             .upload(filePath, imagenFile);
@@ -66,26 +63,17 @@ if (Astro.request.method === "POST") {
     const { error } = await supabase
       .from('historias')
       .insert({ 
-        titulo, 
-        slug, 
-        resumen, 
-        contenido, 
-        creditos, 
-        fecha,
-        cover: coverUrl 
+        titulo, slug, resumen, contenido, creditos, fecha, cover: coverUrl 
       });
 
-    if (error) {
-        console.error("Error DB:", error);
-    } 
-    // Éxito: La página se recargará automáticamente al terminar el POST
+    if (error) console.error("Error DB:", error);
 
   } catch (error) {
     console.error("Error general:", error);
   }
 }
 
-// --- 3. OBTENER HISTORIAS (GET - PARA TODOS) ---
+// --- 3. OBTENER HISTORIAS ---
 const { data: allHistorias } = await supabase
   .from('historias')
   .select('*')
@@ -94,22 +82,23 @@ const { data: allHistorias } = await supabase
 
 <Layout title="Historias y Relatos - Sendero Pedagógico">
     
+    {/* IMPORTAR LIBRERÍA DE COMPRESIÓN (SIN SLOT PARA ASEGURAR CARGA) */}
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+
     {/* HERO SECTION */}
     <section class="bg-gradient-to-r from-emerald-900 to-green-800 py-24 relative overflow-hidden">
-        {/* Patrón de fondo sutil */}
-        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-        
-        <div class="container mx-auto px-4 text-center text-white relative z-10">
-            <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-green-100 text-xs font-bold tracking-widest mb-4 backdrop-blur-sm">
-                MEMORIA VIVA
-            </span>
-            <h1 class="text-5xl md:text-6xl font-bold mb-6 font-playfair drop-shadow-md">
-                Historias y Relatos
-            </h1>
+        <div class="absolute inset-0">
+            <img src="public/imagenes/historias/historias.jpg" alt="Historias" class="w-full h-full object-cover opacity-90"/>
+            <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/90 via-green-900/80 to-stone-50"></div>
+        </div>
+        <div class="container mx-auto px-4 text-center text-white relative z-10 mt-10">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-green-100 text-xs font-bold tracking-widest mb-4 backdrop-blur-sm">MEMORIA VIVA</span>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 font-playfair drop-shadow-md">Historias y Relatos</h1>
             <div class="w-24 h-1 bg-amber-400 mx-auto mb-6 rounded-full"></div>
-            <p class="text-xl max-w-3xl mx-auto opacity-90 font-light leading-relaxed text-green-50">
-                Conoce las voces del territorio, los saberes ancestrales y las vivencias que tejen la identidad de nuestra comunidad.
-            </p>
+            <p class="text-xl max-w-3xl mx-auto opacity-90 font-light leading-relaxed text-green-50">Conoce las voces del territorio y los saberes ancestrales.</p>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
+            <svg class="relative block w-[calc(100%+1.3px)] h-[50px] md:h-[80px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path></svg>
         </div>
     </section>
 
@@ -118,18 +107,15 @@ const { data: allHistorias } = await supabase
         <section class="container mx-auto px-4 py-12 -mt-8 relative z-20">
             <div class="bg-white p-8 rounded-3xl border border-green-100 shadow-xl max-w-4xl mx-auto border-l-8 border-l-green-600">
                 <div class="flex justify-between items-center mb-8 border-b border-gray-100 pb-4">
-                    <div>
-                        <h3 class="text-2xl font-bold text-green-900 font-playfair">🛠️ Panel de Editor</h3>
-                        <p class="text-sm text-gray-500">Agrega una nueva historia al repositorio.</p>
-                    </div>
+                    <h3 class="text-2xl font-bold text-green-900 font-playfair">🛠️ Panel de Editor</h3>
                     <span class="text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold border border-green-200">SESIÓN ACTIVA</span>
                 </div>
                 
-                <form method="POST" enctype="multipart/form-data" class="grid gap-6">
+                <form method="POST" enctype="multipart/form-data" class="grid gap-6" id="storyForm">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Título</label>
-                            <input required type="text" name="titulo" class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 focus:ring-2 focus:ring-green-500 focus:bg-white transition-colors outline-none" placeholder="Ej: El Nguillatun">
+                            <input required type="text" name="titulo" class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 focus:ring-2 focus:ring-green-500 outline-none" placeholder="Ej: El Nguillatun">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">Fecha</label>
@@ -137,40 +123,42 @@ const { data: allHistorias } = await supabase
                         </div>
                     </div>
 
+                    {/* --- INPUT DE IMAGEN CON COMPRESIÓN --- */}
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Imagen de Portada</label>
-                        <div class="flex items-center justify-center w-full">
-                            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-green-300 border-dashed rounded-xl cursor-pointer bg-green-50 hover:bg-green-100 transition-colors group">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Imagen de Portada (Se optimizará automáticamente)</label>
+                        <div class="flex items-center justify-center w-full relative">
+                            <label id="dropzone-label" for="dropzone-file" class="flex flex-col items-center justify-center w-full h-32 border-2 border-green-300 border-dashed rounded-xl cursor-pointer bg-green-50 hover:bg-green-100 transition-colors group">
                                 <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <svg class="w-8 h-8 mb-2 text-green-400 group-hover:text-green-600 transition-colors" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <svg id="upload-icon" class="w-8 h-8 mb-2 text-green-400 group-hover:text-green-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
                                     </svg>
-                                    <p class="text-sm text-gray-500"><span class="font-semibold text-green-700">Clic para subir imagen</span> o arrastrar y soltar</p>
-                                    <p class="text-xs text-gray-400">SVG, PNG, JPG or WEBP</p>
+                                    <p class="text-sm text-gray-500"><span class="font-semibold text-green-700">Clic para subir imagen</span></p>
+                                    <p class="text-xs text-gray-400" id="file-status">JPG, PNG, WEBP (Cualquier tamaño)</p>
                                 </div>
-                                <input id="dropzone-file" type="file" name="imagen" accept="image/*" class="hidden" />
+                                {/* onChange llama a la función de compresión */}
+                                <input id="dropzone-file" type="file" name="imagen" accept="image/*" class="hidden" onchange="handleImageUpload(event)" />
                             </label>
                         </div> 
                     </div>
 
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Resumen Corto</label>
-                        <textarea required name="resumen" rows="2" class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 focus:ring-2 focus:ring-green-500 outline-none transition-all" placeholder="Aparecerá en la tarjeta de presentación..."></textarea>
+                        <textarea required name="resumen" rows="2" class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 focus:ring-2 focus:ring-green-500 outline-none" placeholder="Breve descripción..."></textarea>
                     </div>
 
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Contenido Completo</label>
-                        <textarea required name="contenido" rows="10" class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 focus:ring-2 focus:ring-green-500 outline-none transition-all" placeholder="Escribe aquí toda la historia..."></textarea>
+                        <textarea required name="contenido" rows="6" class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 focus:ring-2 focus:ring-green-500 outline-none" placeholder="Escribe aquí toda la historia..."></textarea>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Créditos / Autoría</label>
-                        <input type="text" name="creditos" class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 outline-none focus:ring-2 focus:ring-green-500 transition-all" placeholder="Ej: Relato de la comunidad">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Créditos</label>
+                        <input type="text" name="creditos" class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 outline-none" placeholder="Ej: Relato de la comunidad">
                     </div>
 
                     <div class="flex justify-end gap-4 pt-4 border-t border-gray-100">
-                        <button type="reset" class="px-6 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 font-medium transition-colors">Cancelar</button>
-                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg hover:shadow-green-900/20 hover:-translate-y-1">
+                        {/* El botón se deshabilita mientras se comprime */}
+                        <button id="submit-btn" type="submit" class="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-8 rounded-xl transition-all shadow-lg hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                             Publicar Historia
                         </button>
                     </div>
@@ -183,30 +171,93 @@ const { data: allHistorias } = await supabase
     <section class="py-24 bg-stone-50 min-h-[60vh]">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                
                 {allHistorias && allHistorias.length > 0 ? (
                     allHistorias.map((historia) => (
-                        <StoryCard 
-                            titulo={historia.titulo}
-                            resumen={historia.resumen}
-                            fecha={historia.fecha}
-                            cover={historia.cover}
-                            slug={historia.slug}
-                            creditos={historia.creditos}
-                        />
+                        <div class="relative group h-full">
+                            <StoryCard 
+                                titulo={historia.titulo}
+                                resumen={historia.resumen}
+                                fecha={historia.fecha}
+                                cover={historia.cover}
+                                slug={historia.slug}
+                                creditos={historia.creditos}
+                            />
+                            {isAdmin && (
+                                <form method="POST" class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" onsubmit="return confirm('¿Borrar historia?');">
+                                    <input type="hidden" name="action" value="delete" />
+                                    <input type="hidden" name="id" value={historia.id} />
+                                    <button type="submit" class="bg-red-500 text-white p-3 rounded-full shadow-lg hover:bg-red-600 hover:scale-110 transition-all border-2 border-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    </button>
+                                </form>
+                            )}
+                        </div>
                     ))
                 ) : (
-                    <div class="col-span-full py-20 text-center">
-                        <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-gray-100">
-                            <span class="text-4xl grayscale opacity-40">📭</span>
-                        </div>
-                        <h3 class="text-xl font-medium text-stone-800">Aún no hay historias</h3>
-                        <p class="text-stone-500 mt-2">Pronto compartiremos los relatos de nuestra comunidad.</p>
-                    </div>
+                    <div class="col-span-full py-20 text-center"><p class="text-stone-500 mt-2">Aún no hay historias.</p></div>
                 )}
-
             </div>
         </div>
     </section>
+
+    {/* --- SCRIPT DE COMPRESIÓN AUTOMÁTICA --- */}
+    <script is:inline>
+        async function handleImageUpload(event) {
+            const imageFile = event.target.files[0];
+            const statusLabel = document.getElementById('file-status');
+            const submitBtn = document.getElementById('submit-btn');
+            const dropzoneLabel = document.getElementById('dropzone-label');
+
+            if (!imageFile) return;
+
+            // Verificar si la librería cargó
+            if (typeof imageCompression === 'undefined') {
+                statusLabel.innerText = "⚠️ Error: Librería de compresión no cargada. Refresca la página.";
+                statusLabel.className = "text-xs text-red-500 font-bold";
+                return;
+            }
+
+            // 1. Mostrar estado de carga
+            statusLabel.innerHTML = `⏳ Optimizando imagen... (${(imageFile.size / 1024 / 1024).toFixed(2)} MB)`;
+            statusLabel.className = "text-xs text-amber-600 font-bold animate-pulse";
+            submitBtn.disabled = true; 
+            dropzoneLabel.classList.add('bg-amber-50', 'border-amber-300');
+
+            // 2. Configuración: Bajar calidad para que pese menos de 1MB
+            const options = {
+                maxSizeMB: 1,          
+                maxWidthOrHeight: 1920, 
+                useWebWorker: true,
+                fileType: "image/webp"  
+            };
+
+            try {
+                // 3. Comprimir
+                const compressedFile = await imageCompression(imageFile, options);
+
+                // 4. Reemplazar archivo en el formulario
+                const dataTransfer = new DataTransfer();
+                const newFile = new File([compressedFile], imageFile.name.split('.')[0] + ".webp", {
+                    type: "image/webp",
+                });
+                
+                dataTransfer.items.add(newFile);
+                event.target.files = dataTransfer.files;
+
+                // 5. Éxito
+                statusLabel.innerHTML = `✅ Lista: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB (Ahorro: ${Math.round((1 - compressedFile.size/imageFile.size)*100)}%)`;
+                statusLabel.className = "text-xs text-green-600 font-bold";
+                dropzoneLabel.classList.remove('bg-amber-50', 'border-amber-300');
+                dropzoneLabel.classList.add('bg-green-50', 'border-green-300');
+                submitBtn.disabled = false; 
+
+            } catch (error) {
+                console.error("Error comprimiendo:", error);
+                statusLabel.innerText = "⚠️ Error al optimizar. Intenta con otra imagen.";
+                statusLabel.className = "text-xs text-red-500 font-bold";
+                submitBtn.disabled = false;
+            }
+        }
+    </script>
 
 </Layout>

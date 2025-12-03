@@ -8,7 +8,7 @@ import Layout from '../layouts/Layout.astro';
     {/* HERO */}
     <section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0">
-            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover" />
+            <img src="public/imagenes/visitar/visitar.jpg" class="w-full h-full object-cover object-[center_25%]" />
             <div class="absolute inset-0 bg-green-950/70"></div>
         </div>
         <div class="relative z-10 text-center text-white container mx-auto px-4">
@@ -29,35 +29,44 @@ import Layout from '../layouts/Layout.astro';
                 
                 {/* COLUMNA IZQUIERDA: Info Práctica */}
                 <div class="space-y-8">
-                    <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-stone-100">
-                        <h2 class="text-3xl font-bold text-green-900 font-playfair mb-6 flex items-center gap-3">
-                            <span class="text-amber-500">📍</span> Cómo Llegar
-                        </h2>
-                        <p class="text-stone-600 mb-6 leading-relaxed">
-                            Nos ubicamos en la comunidad de Anüweyeco, en el corazón de Isla Huapi, comuna de Saavedra. El acceso es a través de un entorno privilegiado rodeado por el Lago Budi.
-                        </p>
-                        <div class="aspect-video bg-gray-200 rounded-xl overflow-hidden relative group">
-                            {/* Aquí iría el iframe de Google Maps real */}
-                            <div class="absolute inset-0 flex items-center justify-center bg-stone-200 text-stone-400 font-bold group-hover:bg-stone-300 transition-colors cursor-pointer">
-                                MAPA INTERACTIVO
-                            </div>
-                        </div>
-                    </div>
+                    {/* --- BLOQUE MAPA (IMAGEN ESTÁTICA) --- */}
+<div class="aspect-video bg-stone-100 rounded-2xl overflow-hidden relative shadow-lg border border-stone-200 group">
+    
+    {/* Enlace para abrir Google Maps al hacer clic */}
+    <a 
+        href="https://maps.app.goo.gl/7CYgcptjhtD6Ugqh8" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="block w-full h-full"
+    >
+        {/* LA IMAGEN DEL MAPA */}
+        <img 
+            src="public/imagenes/visitar/Predio de Escuela.jpg" 
+            alt="Ubicación de la Escuela en Isla Huapi" 
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
 
+        {/* Overlay con texto "Ver en Google Maps" al pasar el mouse */}
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+            <span class="bg-white/90 text-green-900 px-4 py-2 rounded-full text-sm font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                Abrir en Google Maps
+            </span>
+        </div>
+    </a>
+
+</div>
                     <div class="bg-green-900 text-white p-8 rounded-[2rem] shadow-lg relative overflow-hidden">
                         <div class="relative z-10">
                             <h3 class="text-2xl font-bold font-playfair mb-4">Horarios de Visita</h3>
                             <ul class="space-y-4">
                                 <li class="flex justify-between border-b border-green-700 pb-2">
                                     <span>Lunes a Viernes</span>
-                                    <span class="font-bold text-amber-300">09:00 - 17:00</span>
-                                </li>
-                                <li class="flex justify-between border-b border-green-700 pb-2">
-                                    <span>Sábados</span>
-                                    <span class="font-bold text-amber-300">10:00 - 14:00</span>
+                                    <span class="font-bold text-amber-300">08:00 - 11:30  |  13:00 - 17:00</span>
+                                    
                                 </li>
                                 <li class="flex justify-between text-green-300 pt-2">
-                                    <span>Domingos y Festivos</span>
+                                    <span>Sabados, Domingos y Festivos</span>
                                     <span>Cerrado</span>
                                 </li>
                             </ul>
