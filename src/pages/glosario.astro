@@ -3,6 +3,7 @@
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
+import Bandera from '../assets/glosario/bandera.png';
 
 // --- 1. VERIFICACIÓN DE ADMIN ---
 const accessToken = Astro.cookies.get("sb-access-token");
@@ -101,10 +102,13 @@ const categorias = allPalabras ? [...new Set(allPalabras.map(item => item.catego
     {/* HERO SECTION */}
     <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 bg-stone-900">
-            <img 
-                src="/imagenes/glosario/bandera.png" 
+            <Image 
+                src={Bandera} 
                 alt="Bandera Mapuche" 
                 class="w-full h-full object-cover object-center opacity-60"
+                inferSize={true}
+                loading="lazy"
+                decoding="async"
             />
             <div class="absolute inset-0 bg-gradient-to-b from-green-950/80 via-green-900/70 to-stone-50"></div>
         </div>
