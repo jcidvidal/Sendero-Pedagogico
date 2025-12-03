@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 // src/components/StoryCard.astro
 
 interface Props {
@@ -24,9 +26,11 @@ const fechaFormateada = new Date(fecha).toLocaleDateString('es-CL', {
     
     <div class="h-60 w-full bg-stone-100 rounded-2xl overflow-hidden mb-6 relative shadow-inner">
         {cover ? (
-            <img 
+            <Image 
                 src={cover} 
                 alt={titulo} 
+                inferSize={true}
+                format='webp'
                 class="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700 ease-out" 
             />
         ) : (
