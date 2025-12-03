@@ -1,5 +1,6 @@
 ---
 // src/pages/glosario.astro
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
 
@@ -44,10 +45,14 @@ const categorias = allPalabras ? [...new Set(allPalabras.map(item => item.catego
     <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0">
             {/* Imagen de fondo: Textura de tejido o naturaleza macro */}
-            <img 
-                src="https://images.unsplash.com/photo-1617336043834-8c01d4df35d7?q=80&w=2000&auto=format&fit=crop" 
+            <Image
+                src="https://images.unsplash.com/photo-1618458345651-f16fb265da9f?q=80&w=1972&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
                 alt="Textura natural" 
+                inferSize={true}
                 class="w-full h-full object-cover opacity-80"
+                decoding="async"
+                loading="lazy"
+                format ='avif'
             />
             <div class="absolute inset-0 bg-gradient-to-b from-green-950/90 via-green-900/80 to-stone-50"></div>
         </div>

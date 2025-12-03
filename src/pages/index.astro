@@ -2,6 +2,7 @@
 // src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro'; // Asegúrate de que Layout ya lo tenga, si no, quita esta línea.
+import { Image } from 'astro:assets';
 ---
 
 <Layout title="Sendero Pedagógico - Escuela Pública Ruca Raqui">
@@ -11,10 +12,12 @@ import Header from '../components/Header.astro'; // Asegúrate de que Layout ya 
     
     {/* A. Imagen de Fondo (Con efecto Parallax suave si quisieras, aquí fijo) */}
     <div class="absolute inset-0 z-0">
-        <img 
+        <Image 
             src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop" 
-            alt="Bosque nativo y humedal" 
+            alt="Bosque nativo y humedal"
+            inferSize={true}
             class="w-full h-full object-cover opacity-90"
+            format='avif'
         />
         {/* B. Overlay (Capa oscura para que se lea el texto) */}
         <div class="absolute inset-0 bg-gradient-to-b from-green-950/60 via-stone-900/50 to-stone-900/90"></div>
