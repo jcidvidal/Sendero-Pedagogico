@@ -14,7 +14,9 @@ export default defineConfig({
   // 👇 ¡ESTA ES LA LÍNEA CLAVE QUE FALTABA!
   // Sin esto, Astro sigue generando archivos estáticos y los formularios no funcionarán.
   output: 'server',
-
+  image:{
+    domains: ['images.unsplash.com'],
+  },
   adapter: node({
     mode: 'standalone'
   }),

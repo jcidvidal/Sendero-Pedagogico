@@ -1,6 +1,8 @@
 ---
 // src/pages/quienes-somos.astro
 import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import IMG_ESCUELA from "../assets/quienesSomos/imgEscuela.jpeg";
 const pageTitle = "Quiénes Somos - Sendero Pedagógico";
 ---
 
@@ -88,6 +90,10 @@ const pageTitle = "Quiénes Somos - Sendero Pedagógico";
                     src="/imagenes/quienes/Patio.jpg"
                     alt="Escuela Ruca Raqui"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    inferSize={true}
+                    format="avif"
+                    decoding="async"
+                    loading="lazy"
                   />
                   <div class="absolute inset-0 bg-gradient-to-t from-green-900/60 to-transparent pointer-events-none"></div>
                   <span class="absolute bottom-4 left-6 text-white font-bold text-lg pointer-events-none">Nuestra Escuela</span>
