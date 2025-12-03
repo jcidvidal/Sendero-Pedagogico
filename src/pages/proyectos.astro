@@ -2,7 +2,6 @@
 // src/pages/proyectos.astro
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro'; 
-
 const pageTitle = "Proyectos de Innovación - Sendero Pedagógico";
 import BANDURRIA_IMAGE from '../assets/proyectos/Bandurrias.png';
 ---
@@ -17,7 +16,9 @@ import BANDURRIA_IMAGE from '../assets/proyectos/Bandurrias.png';
                 src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=2000&auto=format&fit=crop" 
                 alt="Naturaleza y Tecnología"
                 inferSize={true}
-                format='webp'
+                format='avif'
+                decoding="async"
+                loading="lazy"
                 class="w-full h-full object-cover opacity-90"
             />
             <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/90 via-emerald-900/80 to-stone-50"></div>
@@ -114,7 +115,9 @@ import BANDURRIA_IMAGE from '../assets/proyectos/Bandurrias.png';
                                         src={BANDURRIA_IMAGE}
                                         alt="Bandurria 3D" 
                                         inferSize={true}
-                                        format='webp'
+                                        format='avif'
+                                        decoding="async"
+                                        loading="lazy"
                                         class="w-[90%] h-auto object-contain transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-700 drop-shadow-xl"
                                     />
                                     

@@ -30,7 +30,9 @@ const fechaFormateada = new Date(fecha).toLocaleDateString('es-CL', {
                 src={cover} 
                 alt={titulo} 
                 inferSize={true}
-                format='webp'
+                format='avif'
+                decoding="async"
+                loading="lazy"
                 class="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700 ease-out" 
             />
         ) : (
