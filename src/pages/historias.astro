@@ -3,7 +3,9 @@
 import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
 import StoryCard from '../components/StoryCard.astro';
-
+import { Image } from 'astro:assets';
+import historias from '../assets/historias/historias.jpg';
+import { Picture } from 'astro:assets';
 // --- 1. VERIFICACIÓN DE ADMIN ---
 const accessToken = Astro.cookies.get("sb-access-token");
 const refreshToken = Astro.cookies.get("sb-refresh-token");
@@ -88,7 +90,14 @@ const { data: allHistorias } = await supabase
     {/* HERO SECTION */}
     <section class="bg-gradient-to-r from-emerald-900 to-green-800 py-24 relative overflow-hidden">
         <div class="absolute inset-0">
-            <img src="public/imagenes/historias/historias.jpg" alt="Historias" class="w-full h-full object-cover opacity-90"/>
+            <Picture 
+                src={historias}
+                alt="Historias" 
+                class="w-full h-full object-cover opacity-90"
+                inferSize={true}
+                loading="lazy"
+                decoding="async"
+                />
             <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/90 via-green-900/80 to-stone-50"></div>
         </div>
         <div class="container mx-auto px-4 text-center text-white relative z-10 mt-10">

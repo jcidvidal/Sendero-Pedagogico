@@ -2,6 +2,8 @@
 // src/pages/visitar.astro
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import PredioDeEscuela from '../assets/visitar/Predio de Escuela.jpg';
+import visitar from '../assets/visitar/visitar.jpg';
 ---
 
 <Layout title="Planifica tu Visita">
@@ -9,7 +11,14 @@ import Layout from '../layouts/Layout.astro';
     {/* HERO */}
     <section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0">
-            <img src="public/imagenes/visitar/visitar.jpg" class="w-full h-full object-cover object-[center_25%]" />
+            <Image 
+                src={visitar}
+                alt="Niños colgados de una rama en el bosque"
+                class="w-full h-full object-cover object-[center_25%]"
+                inferSize={true}
+                loading="lazy"
+                decoding="async"
+                />
             <div class="absolute inset-0 bg-green-950/70"></div>
         </div>
         <div class="relative z-10 text-center text-white container mx-auto px-4">
@@ -41,10 +50,13 @@ import Layout from '../layouts/Layout.astro';
         class="block w-full h-full"
     >
         {/* LA IMAGEN DEL MAPA */}
-        <img 
-            src="public/imagenes/visitar/Predio de Escuela.jpg" 
+        <Image 
+            src={PredioDeEscuela}
             alt="Ubicación de la Escuela en Isla Huapi" 
             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            inferSize={true}
+            loading="lazy"
+            decoding="async"
         />
 
         {/* Overlay con texto "Ver en Google Maps" al pasar el mouse */}

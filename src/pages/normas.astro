@@ -1,6 +1,8 @@
 ---
 // src/pages/normas.astro
+import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
+import normas from '../assets/normas/normas.jpg';
 ---
 
 <Layout title="Normas de Convivencia">
@@ -10,10 +12,13 @@ import Layout from '../layouts/Layout.astro';
         
         {/* 1. Imagen de Fondo */}
         <div class="absolute inset-0">
-            <img 
-                src="public/imagenes/normas/normas.jpg" 
+            <Image 
+                src={normas} 
                 alt="Bosque sagrado" 
                 class="w-full h-full object-cover opacity-90"
+                loading="lazy"
+                decoding="async"
+                inferSize={true}
             />
             {/* Overlay: Degradado verde oscuro */}
             <div class="absolute inset-0 bg-gradient-to-b from-green-950/90 via-green-900/80 to-stone-50"></div>
