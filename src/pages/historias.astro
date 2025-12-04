@@ -14,54 +14,72 @@ if (Astro.request.method === "POST") {
 
   try {
     const formData = await Astro.request.formData();
-    
-    const titulo = formData.get("titulo")?.toString() || "";
-    const resumen = formData.get("resumen")?.toString() || "";
-    const contenido = formData.get("contenido")?.toString() || "";
-    const creditos = formData.get("creditos")?.toString() || "";
-    const fecha = formData.get("fecha")?.toString() || new Date().toISOString();
-    
-    // Subida de Imagen
-    const imagenFile = formData.get("imagen");
-    let coverUrl = null;
+    const action = formData.get("action")?.toString();
+    if (action === "delete") {
+        const idToDelete = formData.get("id")?.toString();
+        
+        if (idToDelete) {
+            // Opcional: Primero podrías obtener la historia para borrar también la imagen del Storage
+            // const { data: historiaBorrar } = await supabase.from('historias').select('cover').eq('id', idToDelete).single();
+            // if(historiaBorrar?.cover) { ... lógica para borrar archivo de storage ... }
 
-    if (imagenFile && imagenFile instanceof File && imagenFile.size > 0) {
-        // Nombre único
-        const fileExt = imagenFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-        const filePath = `historias/${fileName}`;
+            const { error } = await supabase
+                .from('historias')
+                .delete()
+                .eq('id', idToDelete);
 
-        // Subir a Supabase
-        const { error: uploadError } = await supabase.storage
-            .from('imagenes')
-            .upload(filePath, imagenFile);
-
-        if (uploadError) {
-            console.error("Error subiendo imagen:", uploadError);
-        } else {
-            const { data: publicUrlData } = supabase.storage
-                .from('imagenes')
-                .getPublicUrl(filePath);
-            coverUrl = publicUrlData.publicUrl;
+            if (error) console.error("Error borrando historia:", error);
         }
-    }
-
-    const slug = titulo.toLowerCase().trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-
-    const { error } = await supabase
-      .from('historias')
-      .insert({ 
-        titulo, slug, resumen, contenido, creditos, fecha, cover: coverUrl 
-      });
-
-    if (error) console.error("Error DB:", error);
-
-  } catch (error) {
-    console.error("Error general:", error);
-  }
+    }else{
+        const titulo = formData.get("titulo")?.toString() || "";
+        const resumen = formData.get("resumen")?.toString() || "";
+        const contenido = formData.get("contenido")?.toString() || "";
+        const creditos = formData.get("creditos")?.toString() || "";
+        const fecha = formData.get("fecha")?.toString() || new Date().toISOString();
+        
+        // Subida de Imagen
+        const imagenFile = formData.get("imagen");
+        let coverUrl = null;
+    
+        if (imagenFile && imagenFile instanceof File && imagenFile.size > 0) {
+            // Nombre único
+            const fileExt = imagenFile.name.split('.').pop();
+            const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const filePath = `historias/${fileName}`;
+    
+            // Subir a Supabase
+            const { error: uploadError } = await supabase.storage
+                .from('imagenes')
+                .upload(filePath, imagenFile);
+    
+            if (uploadError) {
+                console.error("Error subiendo imagen:", uploadError);
+            } else {
+                const { data: publicUrlData } = supabase.storage
+                    .from('imagenes')
+                    .getPublicUrl(filePath);
+                coverUrl = publicUrlData.publicUrl;
+            }
+        }
+        
+    
+        const slug = titulo.toLowerCase().trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    
+        const { error } = await supabase
+          .from('historias')
+          .insert({ 
+            titulo, slug, resumen, contenido, creditos, fecha, cover: coverUrl 
+          });
+    
+        if (error) console.error("Error DB:", error);
+    
+    } 
+    }catch (error) {
+        console.error("Error general:", error);
+      }
 }
 
 // --- 3. OBTENER HISTORIAS ---
