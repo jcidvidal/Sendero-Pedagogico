@@ -9,6 +9,10 @@ await supabase.auth.signOut();
 // Es vital que el 'path' sea "/" para que se borren en todo el sitio
 Astro.cookies.delete("sb-access-token", { path: "/" });
 Astro.cookies.delete("sb-refresh-token", { path: "/" });
+Astro.cookies.delete("is-logged-in", { path: "/" });
+
+Astro.locals.isLoggedIn = false;
+Astro.locals.isAdmin = false;
 
 // 3. Redirigir al inicio (o a donde prefieras)
 return Astro.redirect("/");
