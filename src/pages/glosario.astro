@@ -6,17 +6,7 @@ import { supabase } from '../lib/supabase';
 import Bandera from '../assets/glosario/bandera.png';
 
 // --- 1. VERIFICACIÓN DE ADMIN ---
-const accessToken = Astro.cookies.get("sb-access-token");
-const refreshToken = Astro.cookies.get("sb-refresh-token");
-let isAdmin = false;
-
-if (accessToken && refreshToken) {
-  const { data, error } = await supabase.auth.setSession({
-    access_token: accessToken.value,
-    refresh_token: refreshToken.value,
-  });
-  if (!error && data?.session) isAdmin = true;
-}
+const isAdmin = Astro.locals.isAdmin;
 
 let errors = { palabra: "", significado: "", general: "" };
 let values = { palabra: "", significado: "", categoria: "Cosmovisión" };

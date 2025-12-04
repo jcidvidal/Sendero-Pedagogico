@@ -4,8 +4,7 @@ const currentPath = Astro.url.pathname;
 
 // --- 1. DETECTAR SESIÓN ---
 // Verificamos si existe la cookie de acceso de Supabase
-const accessToken = Astro.cookies.get("sb-access-token");
-const isLoggedIn = !!accessToken; // Convierte el resultado en true o false
+const {isLoggedIn} = Astro.locals;
 
 // --- 2. LISTA DE NAVEGACIÓN (Sin el botón de Admin) ---
 const navItems = [

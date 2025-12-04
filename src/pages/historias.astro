@@ -3,21 +3,10 @@
 import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
 import StoryCard from '../components/StoryCard.astro';
-import { Image } from 'astro:assets';
 import historias from '../assets/historias/historias.jpg';
 import { Picture } from 'astro:assets';
 // --- 1. VERIFICACIÓN DE ADMIN ---
-const accessToken = Astro.cookies.get("sb-access-token");
-const refreshToken = Astro.cookies.get("sb-refresh-token");
-let isAdmin = false;
-
-if (accessToken && refreshToken) {
-  const { data, error } = await supabase.auth.setSession({
-    access_token: accessToken.value,
-    refresh_token: refreshToken.value,
-  });
-  if (!error && data?.session) isAdmin = true;
-}
+const { isAdmin } = Astro.locals;
 
 // --- 2. LÓGICA DEL SERVIDOR (POST) ---
 if (Astro.request.method === "POST") {
