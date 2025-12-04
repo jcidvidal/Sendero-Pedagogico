@@ -38,6 +38,13 @@ if (Astro.request.method === "POST") {
           secure: true,
         });
 
+        Astro.cookies.set("is-logged-in", "true", { // Indicador simple para el frontend
+          path: "/",
+          httpOnly: false,
+          secure: true,
+          maxAge: 60 * 60 * 24 * 7, // 7 días
+        })
+
         // 3. Redirigir al inicio o a historias
         return Astro.redirect("/historias");
       }

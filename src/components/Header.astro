@@ -4,8 +4,7 @@ const currentPath = Astro.url.pathname;
 
 // --- 1. DETECTAR SESIÓN ---
 // Verificamos si existe la cookie de acceso de Supabase
-const accessToken = Astro.cookies.get("sb-access-token");
-const isLoggedIn = !!accessToken; // Convierte el resultado en true o false
+const {isLoggedIn} = Astro.locals;
 
 // --- 2. LISTA DE NAVEGACIÓN (Sin el botón de Admin) ---
 const navItems = [
@@ -55,33 +54,69 @@ const isActive = (href: string) => {
     </div>
 
     {/* --- BOTÓN DE SESIÓN (Dinámico) --- */}
-    <div class="flex items-center">
-        {isLoggedIn ? (
-            // CASO 1: SI ES ADMIN -> Botón de Cerrar Sesión
-            <a 
-                href="/logout" 
-                class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-full text-xs font-bold hover:bg-red-100 transition-colors border border-red-100"
-                title="Cerrar sesión de administrador"
-            >
-                <span>Salir</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-            </a>
-        ) : (
-            // CASO 2: SI ES USUARIO NORMAL -> Botón candado discreto para Login
-            <a 
-                href="/login" 
-                class="group flex items-center gap-2 px-3 py-2 rounded-full text-stone-400 hover:text-green-700 hover:bg-green-50 transition-colors"
-                aria-label="Acceso Administrador"
-                title="Acceso Administrativo"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-            </a>
-        )}
+    <div class="flex items-center" id="user-menu-container">
+        
+        {/* BOTÓN SALIR (Oculto por defecto con 'hidden', se activa por JS o SSR) */}
+        <a 
+            id="btn-logout"
+            href="/logout" 
+            class:list={[
+                "flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-full text-xs font-bold hover:bg-red-100 transition-colors border border-red-100",
+                !isLoggedIn ? "hidden" : "" // Si SSR dice que no, lo ocultamos base
+            ]}
+            title="Cerrar sesión"
+        >
+            <span>Salir</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+        </a>
+
+        {/* BOTÓN LOGIN (Visible por defecto si no hay sesión SSR) */}
+        <a 
+            id="btn-login"
+            href="/login" 
+            class:list={[
+                "group flex items-center gap-2 px-3 py-2 rounded-full text-stone-400 hover:text-green-700 hover:bg-green-50 transition-colors",
+                isLoggedIn ? "hidden" : "" // Si SSR dice que sí, lo ocultamos base
+            ]}
+            aria-label="Acceso Administrador"
+            title="Acceso Administrativo"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+        </a>
     </div>
 
   </nav>
 </header>
+
+<script>
+    // Script que se ejecuta en el cliente para corregir la UI en páginas estáticas
+    // Usamos 'astro:page-load' para compatibilidad con ViewTransitions
+    document.addEventListener('astro:page-load', () => {
+        const btnLogout = document.getElementById('btn-logout');
+        const btnLogin = document.getElementById('btn-login');
+
+        // Función simple para leer cookies
+        const getCookie = (name: string) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop()?.split(';').shift();
+        };
+
+        // Buscamos la cookie pública "is-logged-in"
+        const isUserLoggedIn:boolean = getCookie('is-logged-in') === 'true';
+
+        if (isUserLoggedIn) {
+            // Usuario logueado: Mostrar Salir, Ocultar Login
+            btnLogout?.classList.remove('hidden');
+            btnLogin?.classList.add('hidden');
+        } else {
+            // Usuario anónimo: Mostrar Login, Ocultar Salir
+            btnLogout?.classList.add('hidden');
+            btnLogin?.classList.remove('hidden');
+        }
+    });
+</script>
