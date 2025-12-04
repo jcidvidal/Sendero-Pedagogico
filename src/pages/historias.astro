@@ -19,10 +19,37 @@ if (Astro.request.method === "POST") {
         const idToDelete = formData.get("id")?.toString();
         
         if (idToDelete) {
-            // Opcional: Primero podrías obtener la historia para borrar también la imagen del Storage
-            // const { data: historiaBorrar } = await supabase.from('historias').select('cover').eq('id', idToDelete).single();
-            // if(historiaBorrar?.cover) { ... lógica para borrar archivo de storage ... }
+            // 1. Primero obtenemos la historia para sacar el link de la foto
+            const { data: historia, error: fetchError } = await supabase
+                .from('historias')
+                .select('cover')
+                .eq('id', idToDelete)
+                .single();
 
+            // 2. Si tiene portada, intentamos borrarla del Storage
+            if (historia && historia.cover) {
+                // La URL es tipo: .../storage/v1/object/public/imagenes/historias/foto.jpg
+                // Necesitamos extraer solo: "historias/foto.jpg"
+                // Hacemos un split por el nombre del bucket ("imagenes")
+                const urlParts = historia.cover.split('/imagenes/');
+                
+                if (urlParts.length > 1) {
+                    // Decodificamos por si tiene espacios (%20) u otros caracteres raros
+                    const imagePath = decodeURIComponent(urlParts[1]);
+
+                    const { error: storageError } = await supabase.storage
+                        .from('imagenes') // Nombre de tu bucket
+                        .remove([imagePath]); // Espera un array de rutas
+
+                    if (storageError) {
+                        console.error("Error borrando imagen del storage:", storageError);
+                    } else {
+                        console.log("Imagen borrada correctamente:", imagePath);
+                    }
+                }
+            }
+
+            // 3. Finalmente, borramos el registro de la base de datos
             const { error } = await supabase
                 .from('historias')
                 .delete()
@@ -30,6 +57,8 @@ if (Astro.request.method === "POST") {
 
             if (error) console.error("Error borrando historia:", error);
         }
+        
+        return Astro.redirect('/historias');
     }else{
         const titulo = formData.get("titulo")?.toString() || "";
         const resumen = formData.get("resumen")?.toString() || "";
