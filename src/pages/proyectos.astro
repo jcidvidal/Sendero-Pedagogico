@@ -4,6 +4,8 @@ import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro'; 
 const pageTitle = "Proyectos de Innovación - Sendero Pedagógico";
 import BANDURRIA_IMAGE from '../assets/proyectos/Bandurrias.png';
+
+export const prerender = true;
 ---
 
 <Layout title={pageTitle}>
