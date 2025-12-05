@@ -6,9 +6,22 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
 import node from '@astrojs/node';
-
 import netlify from '@astrojs/netlify';
-import { loadEnv } from 'vite'; // <--- Importante
+
+import { loadEnv } from 'vite';
+
+
+//----------------------------------------------//
+// Soy Sebastián, esto es para que al estar en develop use node
+// Y en producción use netlify
+// Netlify pone process.env.NETLIFY en 'true' automáticamente
+const isNetlify = process.env.NETLIFY === 'true';
+
+const adapterConfig = isNetlify 
+  ? netlify() // En Producción (Netlify)
+  : node({ mode: 'standalone' }); // En Local / Develop (Node Standalone)
+
+//----------------------------------------------//
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Importante para poder actualizar fácil la URL del backend
@@ -30,7 +43,7 @@ export default defineConfig({
   image:{
     domains: ['images.unsplash.com', supabaseDomain].filter(Boolean), // Filtra null si no hay dominio
   },
-  adapter: netlify(),
+  adapter: adapterConfig,
 
   vite: {
     plugins: [tailwindcss()],
