@@ -1,12 +1,11 @@
 ---
-// src/pages/historias.astro
 import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
 import StoryCard from '../components/StoryCard.astro';
 import historias from '../assets/historias/historias.jpg';
 import { Picture } from 'astro:assets';
 // --- 1. VERIFICACIÓN DE ADMIN ---
-const { isAdmin } = Astro.locals;
+const { isAdmin } = Astro.locals; //Gracias al refactor del middleware
 
 // --- 2. LÓGICA DEL SERVIDOR (POST) ---
 if (Astro.request.method === "POST") {
@@ -25,7 +24,9 @@ if (Astro.request.method === "POST") {
                 .select('cover')
                 .eq('id', idToDelete)
                 .single();
-
+            if (fetchError) {
+                console.error("Error obteniendo historia:", fetchError);
+            }
             // 2. Si tiene portada, intentamos borrarla del Storage
             if (historia && historia.cover) {
                 // La URL es tipo: .../storage/v1/object/public/imagenes/historias/foto.jpg
