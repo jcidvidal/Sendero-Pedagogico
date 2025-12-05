@@ -1,5 +1,4 @@
 ---
-// src/pages/proyectos.astro
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro'; 
 const pageTitle = "Proyectos de Innovación - Sendero Pedagógico";
@@ -10,10 +9,9 @@ export const prerender = true;
 
 <Layout title={pageTitle}>
     
-    {/* --- 1. HERO SECTION PREMIUM --- */}
+    {/* --- 1. HERO SECTION --- */}
     <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0">
-            {/* Imagen de fondo: Algo que evoque futuro/naturaleza */}
             <Image 
                 src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=2000&auto=format&fit=crop" 
                 alt="Naturaleza y Tecnología"
@@ -39,7 +37,7 @@ export const prerender = true;
             </p>
         </div>
         
-        {/* Separador SVG */}
+        {/* Separador*/}
         <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
             <svg class="relative block w-[calc(100%+1.3px)] h-[60px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path>
