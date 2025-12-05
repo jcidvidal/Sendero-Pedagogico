@@ -1,31 +1,33 @@
 // src/content/config.js
 import { defineCollection, z } from 'astro:content';
 
-// --- Colección de Historias (ya existe) ---
-const historiasCollection = defineCollection({
+// Define la colección de historias
+const historias = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
     resumen: z.string(),
-    fecha: z.date(),
+    fecha: z.coerce.date(),
     creditos: z.string().optional(),
-    publicado: z.boolean().default(true),
     tags: z.array(z.string()).optional(),
-    cover: z.string().optional(), 
-  }),
+    publicado: z.boolean().default(true),
+    cover: z.string().optional()
+  })
 });
 
-// --- 👇 ¡NUEVO! Colección de Glosario (RF-04) 👇 ---
+// Define la colección de glosario (si existe)
 const glosarioCollection = defineCollection({
   type: 'content',
   schema: z.object({
-    palabra: z.string(), //
-    significado: z.string(), //
+    palabra: z.string(),  // Cambiado de "termino" a "palabra"
+    significado: z.string(), // Cambiado de "definicion" a "significado"
+    categoria: z.string().optional(),
   }),
 });
 
-// --- 👇 ¡ACTUALIZADO! Exporta AMBAS colecciones ---
+// Exporta SOLO UNA VEZ todas las colecciones
 export const collections = {
-  'historias': historiasCollection,
-  'glosario': glosarioCollection, // <-- ¡Añade esta línea!
+  historias,
+  glosario: glosarioCollection
+  // puedes agregar más colecciones aquí
 };

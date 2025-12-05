@@ -1,43 +1,287 @@
 ---
-// src/pages/glosario.astro
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import { supabase } from '../lib/supabase';
+import Bandera from '../assets/glosario/bandera.png';
 
-// 👇 ¡Usamos la RUTA RELATIVA que sabemos que funciona!
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+// --- 1. VERIFICACIÓN DE ADMIN ---
+const isAdmin = Astro.locals.isAdmin;
 
-// 1. Obtenemos las entradas del glosario
-const allPalabrasEntries = await getCollection('glosario');
+let errors = { palabra: "", significado: "", general: "" };
+let values = { palabra: "", significado: "", categoria: "Cosmovisión" };
 
-// 2. Las ordenamos alfabéticamente
-allPalabrasEntries.sort((a, b) => a.data.palabra.localeCompare(b.data.palabra));
+// --- 2. LÓGICA POST (CREAR Y BORRAR) ---
+if (Astro.request.method === "POST") {
+    if (!isAdmin) return new Response("No autorizado", { status: 403 });
 
-// 3. Renderizamos el contenido (¡el arreglo para .Content!)
-const allPalabras = await Promise.all(
-  allPalabrasEntries.map(async (item) => {
-    const { Content } = await item.render();
-    return {
-      data: item.data,
-      Content: Content,
-    };
-  })
-);
+    try {
+        const formData = await Astro.request.formData();
+        const action = formData.get("action"); // <-- CAPTURAMOS LA ACCIÓN
+
+        // === CASO 1: BORRAR ===
+        if (action === "delete") {
+            const idToDelete = formData.get("id");
+            if (idToDelete) {
+                const { error } = await supabase.from('glosario').delete().eq('id', idToDelete);
+                if (error) console.error("Error borrando:", error);
+            }
+        }
+        
+        // === CASO 2: CREAR ===
+        else {
+            // Capturar valores
+            values.palabra = formData.get("palabra")?.toString().trim() || "";
+            values.significado = formData.get("significado")?.toString().trim() || "";
+            values.categoria = formData.get("categoria")?.toString() || "Cosmovisión";
+
+            // Validaciones
+            let hasError = false;
+
+            if (values.palabra.length < 2) {
+                errors.palabra = "La palabra es muy corta.";
+                hasError = true;
+            } else if (values.palabra.length > 50) {
+                errors.palabra = "La palabra es demasiado larga.";
+                hasError = true;
+            }
+
+            if (values.significado.length < 2) {
+                errors.significado = "La definición es muy breve.";
+                hasError = true;
+            } else if (values.significado.length > 500) {
+                errors.significado = "La definición es muy larga.";
+                hasError = true;
+            }
+
+            // Guardar
+            if (!hasError) {
+                const { error } = await supabase.from('glosario').insert({ 
+                    palabra: values.palabra, 
+                    significado: values.significado, 
+                    categoria: values.categoria 
+                });
+
+                if (error) {
+                    console.error("Error DB:", error);
+                    errors.general = "Error al guardar.";
+                } else {
+                    // Limpiar formulario tras éxito
+                    values = { palabra: "", significado: "", categoria: "Cosmovisión" };
+                }
+            }
+        }
+
+    } catch (error) { 
+        console.error("Error general:", error);
+        errors.general = "Ocurrió un error inesperado.";
+    }
+}
+
+// --- 3. GET DATOS ---
+const { data: allPalabras } = await supabase
+  .from('glosario')
+  .select('*')
+  .order('palabra', { ascending: true });
+
+const categorias = allPalabras ? [...new Set(allPalabras.map(item => item.categoria).filter(Boolean))] : [];
 ---
-<BaseLayout title="Glosario Mapuche">
-  <div class="container mx-auto p-4 max-w-3xl">
-    <h1 class="text-4xl font-bold text-gray-900 mb-8">Glosario de Términos</h1>
 
-    <div class="space-y-6">
-      {allPalabras.map(item => (
-        <div class="p-6 bg-white rounded-lg shadow-md">
-          <h2 class="text-2xl font-bold text-gray-900">{item.data.palabra}</h2>
-          <p class="text-gray-700 mt-2">{item.data.significado}</p>
+<Layout title="Glosario - Sendero Pedagógico">
 
-          <div class="prose prose-sm mt-4 text-gray-600">
-            <item.Content /> 
-          </div>
+    {/* HERO SECTION */}
+    <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 bg-stone-900">
+            <Image 
+                src={Bandera} 
+                alt="Bandera Mapuche" 
+                class="w-full h-full object-cover object-center opacity-60"
+                inferSize={true}
+                loading="lazy"
+                decoding="async"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-green-950/80 via-green-900/70 to-stone-50"></div>
         </div>
-      ))}
-    </div>
 
-  </div>
-</BaseLayout>
+        <div class="relative z-10 container mx-auto px-4 text-center -top-5">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-amber-200 text-xs font-bold tracking-widest mb-6 backdrop-blur-sm">
+                SABIDURÍA ANCESTRAL
+            </span>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 font-playfair drop-shadow-lg">
+                Glosario <span class="text-amber-400 italic">Mapuche</span>
+            </h1>
+            <p class="text-xl text-green-100 max-w-2xl mx-auto font-light leading-relaxed">
+                Cada palabra es un universo. Descubre los conceptos profundos que conectan nuestra lengua con el territorio.
+            </p>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
+            <svg class="relative block w-[calc(100%+1.3px)] h-[50px] md:h-[80px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path>
+            </svg>
+        </div>
+    </section>
+
+    {/* PANEL ADMIN */}
+    {isAdmin && (
+        <section class="container mx-auto px-4 -mt-10 relative z-20 mb-16">
+            <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-green-100 max-w-4xl mx-auto border-l-8 border-l-green-600">
+                <div class="flex items-center gap-4 mb-6 border-b border-gray-100 pb-4">
+                    <div class="bg-green-100 p-3 rounded-full text-green-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-green-900">Agregar Nuevo Término</h3>
+                        <p class="text-sm text-gray-500">Panel de Administrador</p>
+                    </div>
+                </div>
+                
+                {errors.general && (
+                    <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm font-medium">
+                        {errors.general}
+                    </div>
+                )}
+
+                <form method="POST" class="grid gap-6">
+                    {/* Campo oculto para indicar que estamos creando */}
+                    <input type="hidden" name="action" value="create" />
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Palabra *</label>
+                            <input required type="text" name="palabra" value={values.palabra} class={`w-full rounded-xl border ${errors.palabra ? 'border-red-500 bg-red-50' : 'border-transparent bg-gray-50'} focus:border-green-500 focus:bg-white focus:ring-0 transition-all p-3 font-playfair font-bold text-lg text-green-900`} placeholder="Ej: Mañun" />
+                            {errors.palabra && <p class="text-red-500 text-xs mt-1 font-medium">{errors.palabra}</p>}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Categoría</label>
+                            <select name="categoria" class="w-full rounded-xl bg-gray-50 border-transparent focus:border-green-500 focus:bg-white focus:ring-0 transition-all p-3">
+                                <option value="Cosmovisión" selected={values.categoria === "Cosmovisión"}>Cosmovisión</option>
+                                <option value="Naturaleza" selected={values.categoria === "Naturaleza"}>Naturaleza</option>
+                                <option value="Ceremonial" selected={values.categoria === "Ceremonial"}>Ceremonial</option>
+                                <option value="Social" selected={values.categoria === "Social"}>Social</option>
+                                <option value="Otros" selected={values.categoria === "Otros"}>Otros</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Significado *</label>
+                        <textarea required name="significado" rows="2" maxlength="500" class={`w-full rounded-xl border ${errors.significado ? 'border-red-500 bg-red-50' : 'border-transparent bg-gray-50'} focus:border-green-500 focus:bg-white focus:ring-0 transition-all p-3 text-gray-700 leading-relaxed`}>{values.significado}</textarea>
+                        {errors.significado && <p class="text-red-500 text-xs mt-1 font-medium">{errors.significado}</p>}
+                    </div>
+                    <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-8 rounded-xl w-full transition-transform hover:-translate-y-1 shadow-lg">Guardar Término</button>
+                </form>
+            </div>
+        </section>
+    )}
+
+    {/* LISTADO DE PALABRAS */}
+    <main class="container mx-auto px-4 py-12 bg-stone-50 min-h-[60vh]">
+        
+        {/* Filtros */}
+        {categorias.length > 0 && (
+            <div class="flex flex-wrap justify-center gap-2 mb-12" id="filters-container">
+                <button class="filter-btn active px-5 py-2 rounded-full border border-green-600 bg-green-600 text-white text-sm font-bold shadow-md transition-all" data-filter="all">Todos</button>
+                {categorias.map(cat => (
+                    <button class="filter-btn px-5 py-2 rounded-full bg-white border border-stone-200 text-stone-600 text-sm font-medium shadow-sm transition-all hover:border-green-400 hover:text-green-700" data-filter={cat}>{cat}</button>
+                ))}
+            </div>
+        )}
+
+        {/* Grid */}
+        {allPalabras && allPalabras.length > 0 ? (
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto transition-all duration-500" id="glossary-grid">
+                {allPalabras.map((item) => (
+                    <article 
+                        class="glossary-item group bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-xl hover:shadow-green-900/5 transition-all duration-300 border border-stone-100 hover:border-green-200 relative overflow-hidden h-full flex flex-col"
+                        data-category={item.categoria}
+                    >
+                        <span class="absolute -right-4 -top-6 text-[10rem] font-serif text-stone-50 font-bold select-none group-hover:text-green-50 transition-colors pointer-events-none">
+                            {item.palabra.charAt(0)}
+                        </span>
+
+                        <div class="relative z-10 flex flex-col flex-grow">
+                            <div class="mb-4">
+                                {item.categoria && (
+                                    <span class="inline-block px-3 py-1 rounded-lg bg-green-50 text-green-800 text-[10px] font-bold tracking-widest uppercase mb-3">
+                                        {item.categoria}
+                                    </span>
+                                )}
+                                <h2 class="text-3xl font-bold text-green-900 font-playfair group-hover:text-amber-600 transition-colors leading-tight">
+                                    {item.palabra}
+                                </h2>
+                            </div>
+                            <p class="text-stone-600 leading-relaxed text-lg flex-grow">
+                                {item.significado}
+                            </p>
+                        </div>
+
+                        {/* BOTÓN DE BORRAR (SOLO ADMIN) */}
+                        {isAdmin && (
+                            <form 
+                                method="POST" 
+                                class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                onsubmit="return confirm('¿Borrar este término?');"
+                            >
+                                <input type="hidden" name="action" value="delete" />
+                                <input type="hidden" name="id" value={item.id} />
+                                <button 
+                                    type="submit" 
+                                    class="bg-red-100 text-red-600 p-2 rounded-full hover:bg-red-600 hover:text-white transition-colors shadow-sm"
+                                    title="Borrar"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </form>
+                        )}
+                    </article>
+                ))}
+            </div>
+        ) : (
+            <div class="text-center py-20 opacity-50">
+                <div class="w-20 h-20 bg-stone-200 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl grayscale opacity-50">📖</div>
+                <p class="text-xl font-playfair italic text-stone-500">El diccionario está esperando sus primeras palabras...</p>
+            </div>
+        )}
+    </main>
+
+    {/* SCRIPT FILTRADO (Con soporte para ViewTransitions) */}
+    <script is:inline>
+        function initFilters() {
+            const buttons = document.querySelectorAll('.filter-btn');
+            const items = document.querySelectorAll('.glossary-item');
+
+            if (buttons.length === 0) return;
+
+            buttons.forEach(btn => {
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                
+                newBtn.addEventListener('click', () => {
+                    const allButtons = document.querySelectorAll('.filter-btn');
+                    allButtons.forEach(b => {
+                        b.classList.remove('bg-green-600', 'text-white', 'border-green-600');
+                        b.classList.add('bg-white', 'text-stone-600', 'border-stone-200');
+                    });
+                    
+                    newBtn.classList.remove('bg-white', 'text-stone-600', 'border-stone-200');
+                    newBtn.classList.add('bg-green-600', 'text-white', 'border-green-600');
+
+                    const filterValue = newBtn.getAttribute('data-filter');
+                    items.forEach(item => {
+                        const itemCategory = item.getAttribute('data-category');
+                        if (filterValue === 'all' || itemCategory === filterValue) {
+                            item.style.display = 'flex';
+                            item.style.opacity = '0';
+                            setTimeout(() => item.style.opacity = '1', 50);
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+        document.addEventListener('astro:page-load', initFilters);
+    </script>
+
+</Layout>

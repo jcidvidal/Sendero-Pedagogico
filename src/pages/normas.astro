@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import normas from '../assets/normas/normas.jpg';
+
+export const prerender = true;
+---
+
+<Layout title="Normas de Convivencia">
+
+    {/* HERO SECTION */}
+    <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
+        
+        {/* 1. Imagen de Fondo */}
+        <div class="absolute inset-0">
+            <Image 
+                src={normas} 
+                alt="Bosque sagrado" 
+                class="w-full h-full object-cover opacity-90"
+                loading="lazy"
+                decoding="async"
+                inferSize={true}
+            />
+            {/* Overlay: Degradado verde oscuro */}
+            <div class="absolute inset-0 bg-gradient-to-b from-green-950/90 via-green-900/80 to-stone-50"></div>
+        </div>
+
+        {/* 2. Contenido */}
+        <div class="relative z-10 text-center text-white px-4 container mx-auto -top-3">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-amber-200 text-xs font-bold tracking-widest mb-6 backdrop-blur-sm">
+                CONVIVENCIA ARMÓNICA
+            </span>
+            <h1 class="text-5xl md:text-7xl font-bold font-playfair mb-6 drop-shadow-lg">
+                Pacto de Respeto
+            </h1>
+            <div class="w-24 h-1 bg-amber-500 mx-auto mb-8 rounded-full"></div>
+            <p class="text-xl text-green-100 max-w-2xl mx-auto font-light leading-relaxed">
+                Para cuidar el <span class="text-amber-400 font-bold">Küme Mogen</span> (Buen Vivir), te pedimos seguir estas normas sagradas en nuestro territorio.
+            </p>
+        </div>
+
+        {/* 3. Separador */}
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
+            <svg class="relative block w-[calc(100%+1.3px)] h-[60px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path>
+            </svg>
+        </div>
+    </section>
+
+    <main class="bg-stone-50 py-20">
+        <div class="container mx-auto px-4">
+            
+            {/* GRID DE NORMAS */}
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                
+                {/* TARJETA 1: ESPIRITUALIDAD */}
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-xl transition-all border-l-8 border-l-amber-400">
+                    <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center text-3xl mb-6">🙏</div>
+                    <h2 class="text-2xl font-bold text-green-950 font-playfair mb-4">Respeto Espiritual</h2>
+                    <ul class="space-y-3 text-stone-600">
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 mt-1">●</span>
+                            Caminar en silencio por zonas de reflexión.
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 mt-1">●</span>
+                            No tocar ni alterar espacios ceremoniales (Rehue).
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 mt-1">●</span>
+                            Pedir permiso mentalmente al entrar al bosque.
+                        </li>
+                    </ul>
+                </div>
+
+                {/* TARJETA 2: NATURALEZA */}
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-xl transition-all border-l-8 border-l-green-600">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-3xl mb-6">🌿</div>
+                    <h2 class="text-2xl font-bold text-green-950 font-playfair mb-4">Cuidado de la Naturaleza</h2>
+                    <ul class="space-y-3 text-stone-600">
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 mt-1">●</span>
+                            No arrancar plantas, flores ni hongos.
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 mt-1">●</span>
+                            Llevarse toda la basura (incluso orgánica).
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-green-500 mt-1">●</span>
+                            No alimentar a la fauna silvestre.
+                        </li>
+                    </ul>
+                </div>
+
+                {/* TARJETA 3: PROHIBICIONES */}
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm hover:shadow-xl transition-all border-l-8 border-l-red-500 md:col-span-2">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center text-3xl flex-shrink-0">🚫</div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-green-950 font-playfair mb-2">Estrictamente Prohibido</h2>
+                            <p class="text-stone-500 mb-4">Por seguridad de todos y del entorno.</p>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="px-4 py-2 bg-red-50 text-red-700 rounded-lg font-bold text-sm">Fumar / Fuego</span>
+                                <span class="px-4 py-2 bg-red-50 text-red-700 rounded-lg font-bold text-sm">Alcohol</span>
+                                <span class="px-4 py-2 bg-red-50 text-red-700 rounded-lg font-bold text-sm">Drones (sin permiso)</span>
+                                <span class="px-4 py-2 bg-red-50 text-red-700 rounded-lg font-bold text-sm">Mascotas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</Layout>

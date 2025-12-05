@@ -1,0 +1,39 @@
+---
+// ---- ESTE ES EL CÓDIGO PARA: src/layouts/Layout.astro ----
+
+// 1. Importa los componentes que SIEMPRE se repiten
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro'; // <-- Esta es la línea corregida
+import { ClientRouter} from 'astro:transitions';
+import '../styles/global.css'; // Importamos los estilos globales
+import LoadingIndicator from "astro-loading-indicator/component"
+// 2. Esto permite que cada página le pase un "título"
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="Proyecto sendero intercultural Escuela Ruca Raqui" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{title}</title>
+    
+    <ClientRouter />
+    <LoadingIndicator color='#15803d' height='5px' animationDuration={500} threshold={100} />
+  </head>
+  <body class="bg-stone-50 text-gray-800 font-inter antialiased selection:bg-green-200 selection:text-green-900">
+    <div class="fixed inset-0 z-[-1] opacity-40 pointer-events-none" 
+         style="background-image: url('https://grainy-gradients.vercel.app/noise.svg');">
+    </div>
+    
+    <Header />
+    <slot />
+    <Footer />
+</body>
+</html>

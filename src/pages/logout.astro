@@ -1,0 +1,14 @@
+---
+import { supabase } from '../lib/supabase';
+
+await supabase.auth.signOut();
+
+Astro.cookies.delete("sb-access-token", { path: "/" });
+Astro.cookies.delete("sb-refresh-token", { path: "/" });
+Astro.cookies.delete("is-logged-in", { path: "/" });
+
+Astro.locals.isLoggedIn = false;
+Astro.locals.isAdmin = false;
+
+return Astro.redirect("/");
+---

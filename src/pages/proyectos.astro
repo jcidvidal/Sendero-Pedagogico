@@ -1,0 +1,170 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro'; 
+const pageTitle = "Proyectos de Innovación - Sendero Pedagógico";
+import BANDURRIA_IMAGE from '../assets/proyectos/Bandurrias.png';
+
+export const prerender = true;
+---
+
+<Layout title={pageTitle}>
+    
+    {/* --- 1. HERO SECTION --- */}
+    <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <Image 
+                src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=2000&auto=format&fit=crop" 
+                alt="Naturaleza y Tecnología"
+                inferSize={true}
+                format='avif'
+                decoding="async"
+                loading="lazy"
+                class="w-full h-full object-cover opacity-90"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/90 via-emerald-900/80 to-stone-50"></div>
+        </div>
+
+        <div class="relative z-10 container mx-auto px-4 text-center -top-10 ">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-emerald-200 text-xs font-bold tracking-widest  backdrop-blur-sm">
+                VANGUARDIA EDUCATIVA
+            </span>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 font-playfair drop-shadow-lg leading-16">
+                Innovación <span class="text-amber-400 italic">&</span> <br/> Proyectos
+            </h1>
+            <div class="w-24 h-1 bg-amber-500 mx-auto mb-8 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.6)]"></div>
+            <p class="text-xl text-emerald-100 max-w-2xl mx-auto font-light leading-relaxed">
+                Llevamos el <em class="text-white font-semibold not-italic">mapuche kimün</em> hacia el futuro a través de iniciativas tecnológicas que dialogan con nuestra raíz.
+            </p>
+        </div>
+        
+        {/* Separador*/}
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
+            <svg class="relative block w-[calc(100%+1.3px)] h-[60px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path>
+            </svg>
+        </div>
+    </section>
+
+    {/* --- 2. PROYECTO DESTACADO (Layout Asimétrico) --- */}
+    <section class="py-24 bg-stone-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                
+                {/* Etiqueta de la sección */}
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-emerald-950 mb-4 font-playfair">Proyecto Destacado</h2>
+                    <p class="text-stone-500">Fusionando realidad aumentada con biodiversidad local</p>
+                </div>
+
+                <div class="bg-white rounded-[3rem] p-8 md:p-12 shadow-xl border border-stone-100 overflow-hidden relative">
+                    {/* Decoración de fondo */}
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-emerald-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-60 pointer-events-none"></div>
+
+                    <div class="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+                        
+                        {/* COLUMNA IZQUIERDA: Información Técnica */}
+                        <div class="space-y-8">
+                            <div>
+                                <h3 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2 font-playfair leading-tight">
+                                    Fillke Mogen <span class="text-emerald-600">Digital</span>
+                                </h3>
+                                <p class="text-sm font-bold text-amber-500 tracking-wide uppercase">Mascotas Virtuales 3D</p>
+                            </div>
+                            
+                            <p class="text-lg text-stone-600 leading-relaxed">
+                                Este proyecto de <strong class="text-emerald-700">ciencia guiada y significativa</strong> nace de la necesidad de vincular a los estudiantes con el ecosistema de Isla Huapi, promoviendo el concepto de sustentabilidad de manera interactiva.
+                            </p>
+
+                            {/* Tarjetas de detalles (Grid pequeño) */}
+                            <div class="grid gap-4">
+                                {/* Item 1 */}
+                                <div class="flex items-start gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-100">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl flex-shrink-0">🎯</div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 text-sm uppercase mb-1">Objetivo</h4>
+                                        <p class="text-stone-600 text-sm">Fomentar el cuidado ambiental a través de la realidad aumentada.</p>
+                                    </div>
+                                </div>
+                                {/* Item 2 */}
+                                <div class="flex items-start gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-100">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xl flex-shrink-0">💻</div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 text-sm uppercase mb-1">Tecnología</h4>
+                                        <p class="text-stone-600 text-sm">Modelado 3D y visualización interactiva en tiempo real.</p>
+                                    </div>
+                                </div>
+                                {/* Item 3 */}
+                                <div class="flex items-start gap-4 p-4 rounded-2xl bg-stone-50 border border-stone-100">
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xl flex-shrink-0">🎓</div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 text-sm uppercase mb-1">Sello Educativo</h4>
+                                        <p class="text-stone-600 text-sm">Aprendizaje Profundo e Integral con Perspectiva Científica.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* COLUMNA DERECHA: Visualización del Modelo */}
+                        <div class="relative group">
+                            {/* Marco de la imagen */}
+                            <div class="bg-gradient-to-br from-stone-100 to-white rounded-[2.5rem] p-4 shadow-inner border border-stone-200">
+                                <div class="relative rounded-[2rem] overflow-hidden bg-white shadow-lg border border-stone-100 aspect-square flex items-center justify-center group-hover:shadow-2xl transition-all duration-500">
+                                    
+                                    {/* Imagen de la Bandurria */}
+                                    <Image 
+                                        src={BANDURRIA_IMAGE}
+                                        alt="Bandurria 3D" 
+                                        inferSize={true}
+                                        format='avif'
+                                        decoding="async"
+                                        loading="lazy"
+                                        class="w-[90%] h-auto object-contain transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-700 drop-shadow-xl"
+                                    />
+                                    
+                                    {/* Badge flotante */}
+                                    <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-bold text-emerald-800 shadow-lg border border-white/50 flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                        MODELO 3D
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Caption debajo */}
+                            <div class="text-center mt-6">
+                                <p class="text-stone-500 text-sm font-medium">
+                                    <span class="text-emerald-600 font-bold">Figura:</span> Bandurria (Raki), símbolo de nuestra escuela.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    {/* --- 3. CTA DE COLABORACIÓN --- */}
+    <section class="py-24 bg-emerald-900 relative overflow-hidden text-white">
+        {/* Patrón de fondo */}
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="w-20 h-20 bg-emerald-800 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-emerald-700 rotate-3">
+                <span class="text-4xl">💡</span>
+            </div>
+            
+            <h2 class="text-3xl md:text-5xl font-bold mb-6 font-playfair">¿Tienes una idea innovadora?</h2>
+            
+            <p class="text-xl text-emerald-100 mb-10 max-w-2xl mx-auto font-light">
+                Trabajamos en colaboración con entidades educativas y comunitarias. 
+                Si deseas sumar tecnología y saberes al territorio, las puertas de la Ruca están abiertas.
+            </p>
+            
+            <a href="/contacto" class="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold py-4 px-10 rounded-full transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:-translate-y-1">
+                <span>Contactar al Equipo</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </a>
+        </div>
+    </section>
+
+</Layout>

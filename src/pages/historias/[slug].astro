@@ -1,49 +1,145 @@
 ---
-// src/pages/historias/[slug].astro
+import Layout from '../../layouts/Layout.astro';
+import { supabase } from '../../lib/supabase';
 
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+// 1. OBTENER EL SLUG
+const { slug } = Astro.params;
 
-export async function getStaticPaths() {
-  const allHistorias = await getCollection('historias', ({ data }) => {
-    // Filtramos las historias que no estén publicadas
-    return data.publicado !== false;
-  });
-  
-  return allHistorias.map(historia => ({
-    params: { slug: historia.slug },
-    props: { historia },
-  }));
+// 2. BUSCAR EN DB
+const { data: historia, error } = await supabase
+  .from('historias')
+  .select('*')
+  .eq('slug', slug)
+  .single();
+
+// 3. SI NO EXISTE, REDIRIGIR A 404
+if (!historia || error) {
+  return Astro.redirect('/404');
 }
 
-const { historia } = Astro.props;
-const { Content } = await historia.render();
+// Formatear fecha de forma elegante (Ej: Viernes, 12 de mayo de 2024)
+const fechaFormateada = new Date(historia.fecha).toLocaleDateString('es-CL', {
+  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+});
 ---
-<BaseLayout title={historia.data.title}>
-  <div class="container mx-auto p-4 max-w-3xl">
+
+<Layout title={`${historia.titulo} - Sendero Pedagógico`}>
+
+  {/* --- 1. HERO DE LA HISTORIA (CABECERA) --- */}
+  <header class="relative min-h-[60vh] flex items-center justify-center overflow-hidden bg-stone-900 pb-20">
     
-    <h1 class="text-5xl font-bold text-gray-900 mb-2">{historia.data.title}</h1>
-    
-    <div class="text-gray-600 mb-6">
-      <span>Publicado el {historia.data.fecha.toLocaleDateString('es-CL')}</span>
-      {historia.data.creditos && (
-        <span class="italic"> | {historia.data.creditos}</span>
-      )}
+    {/* Fondo: Imagen Cover Difuminada o Gradiente */}
+    <div class="absolute inset-0">
+        {historia.cover ? (
+            <img 
+                src={historia.cover} 
+                alt="Fondo difuminado" 
+                class="w-full h-full object-cover blur-md opacity-60 scale-110"
+            />
+        ) : (
+            <div class="w-full h-full bg-gradient-to-br from-green-950 to-stone-900 opacity-80"></div>
+        )}
+        {/* Capa oscura para que el texto blanco se lea bien */}
+        <div class="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/40 to-black/30"></div>
     </div>
 
-    <div class="prose lg:prose-xl mb-8">
-      <Content />
+    {/* Contenido del Título */}
+    <div class="relative z-10 container mx-auto px-4 text-center max-w-4xl mt-10">
+        
+        <a href="/historias" class="inline-flex items-center text-green-200 hover:text-white mb-8 transition-colors text-xs font-bold tracking-[0.2em] uppercase group">
+            <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Volver a Historias
+        </a>
+        
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white font-playfair mb-8 leading-tight drop-shadow-2xl">
+            {historia.titulo}
+        </h1>
+
+        {/* Metadatos (Fecha y Autor) */}
+        <div class="flex flex-wrap justify-center items-center gap-6 text-stone-300 text-sm md:text-base font-light border-t border-white/20 pt-8 inline-block">
+            <span class="flex items-center">
+                <svg class="w-5 h-5 mr-2 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="capitalize">{fechaFormateada}</span>
+            </span>
+            <span class="hidden md:inline text-stone-600">•</span>
+            <span class="flex items-center">
+                <svg class="w-5 h-5 mr-2 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                {historia.creditos || "Autoría Comunitaria"}
+            </span>
+        </div>
+    </div>
+  </header>
+
+  {/* --- 2. CONTENIDO DEL ARTÍCULO (TARJETA FLOTANTE) --- */}
+  <main class="bg-stone-50 pb-24 relative">
+    
+    <div class="container mx-auto px-4">
+        {/* Margen negativo (-mt-32) para que suba sobre el header */}
+        <article class="max-w-4xl mx-auto bg-white p-8 md:p-16 rounded-[2.5rem] shadow-xl shadow-stone-900/5 -mt-32 relative z-20 border border-stone-100">
+            
+            {/* Imagen Principal Nítida (Si existe) */}
+            {historia.cover && (
+                <div class="mb-12 rounded-2xl overflow-hidden shadow-lg border border-stone-100 aspect-video">
+                    <img src={historia.cover} alt={historia.titulo} class="w-full h-full object-cover" />
+                </div>
+            )}
+
+            {/* Resumen Destacado (Copete) */}
+            <div class="text-xl md:text-2xl text-stone-600 font-playfair italic leading-relaxed mb-12 border-l-4 border-amber-400 pl-6 md:pl-10 py-2">
+                "{historia.resumen}"
+            </div>
+
+            {/* Separador ornamental */}
+            <div class="flex items-center justify-center gap-3 mb-12 opacity-40">
+                <span class="w-16 h-[1px] bg-green-900"></span>
+                <span class="text-green-900 text-xl">❦</span>
+                <span class="w-16 h-[1px] bg-green-900"></span>
+            </div>
+
+            {/* CUERPO DEL TEXTO:
+               - whitespace-pre-wrap: Respeta los "enters" del textarea.
+               - prose: Da estilo automático a negritas, listas, etc.
+               - prose-stone: Usa colores grises cálidos.
+               - prose-lg: Letra grande y legible.
+            */}
+            <div class="prose prose-lg prose-stone max-w-none text-gray-700 leading-loose font-serif whitespace-pre-wrap drop-cap">
+                {historia.contenido}
+            </div>
+
+            {/* Pie de Artículo */}
+            <div class="mt-16 pt-8 border-t border-stone-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-stone-400 uppercase tracking-widest font-bold">Categoría:</span>
+                    <span class="inline-block bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-green-100">
+                        Historia Local
+                    </span>
+                </div>
+                
+                {/* Botón de volver abajo */}
+                <a href="/historias" class="text-stone-500 hover:text-green-700 font-bold text-sm flex items-center gap-2 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path></svg>
+                    Volver al listado
+                </a>
+            </div>
+
+        </article>
     </div>
 
-    {historia.data.tags && historia.data.tags.length > 0 && (
-      <div class="flex flex-wrap gap-2">
-        {historia.data.tags.map(tag => (
-          <span class="bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full">
-            {tag}
-          </span>
-        ))}
-      </div>
-    )}
+  </main>
 
-  </div>
-</BaseLayout>
+</Layout>
+
+{/* Estilos adicionales opcionales para la letra capital */}
+<style>
+  /* Hace que la primera letra del contenido sea grande y elegante */
+  .drop-cap::first-letter {
+    float: left;
+    font-size: 3.5rem;
+    line-height: 0.8;
+    margin-right: 0.5rem;
+    margin-top: 0.2rem;
+    font-weight: bold;
+    color: #064e3b; /* green-900 */
+    font-family: 'Playfair Display', serif;
+  }
+</style>

@@ -1,42 +1,135 @@
 ---
-// src/pages/visitar.astro
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PredioDeEscuela from '../assets/visitar/Predio de Escuela.jpg';
+import visitar from '../assets/visitar/visitar.jpg';
 
-// 👇 ¡Usamos la RUTA RELATIVA que sabemos que funciona!
-import BaseLayout from '../layouts/BaseLayout.astro';
-
-// 👇 ¡Usamos la RUTA PÚBLICA (con /imagenes/) que sabemos que funciona!
-// (Asegúrate de que tu mapa esté en 'public/imagenes/historias/mapa-ruca-raqui.jpg')
-const mapaUrl = "/imagenes/historias/Imagen de WhatsApp 2025-11-01 a las 18.59.00_e4a23671.jpg"; 
+export const prerender = true;
 ---
-<BaseLayout title="Visita el Sendero">
-  <div class="container mx-auto p-4 max-w-4xl"> {/* Un poco más ancho para el mapa */}
 
-    <h1 class="text-4xl font-bold text-gray-900 mb-8">Visita el Sendero Pedagógico</h1>
+<Layout title="Planifica tu Visita">
+
+    {/* HERO */}
+    <section class="relative h-[50vh] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <Image 
+                src={visitar}
+                alt="Niños colgados de una rama en el bosque"
+                class="w-full h-full object-cover object-[center_25%]"
+                inferSize={true}
+                loading="lazy"
+                decoding="async"
+                />
+            <div class="absolute inset-0 bg-green-950/70"></div>
+        </div>
+        <div class="relative z-10 text-center text-white container mx-auto px-4">
+            <h1 class="text-5xl md:text-7xl font-bold font-playfair mb-4">Ven al Sendero</h1>
+            <p class="text-xl opacity-90 font-light">Escuela Pública Ruca Raqui, Isla Huapi</p>
+        </div>
+        {/* Separador */}
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
+            <svg class="relative block w-[calc(100%+1.3px)] h-[50px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path>
+            </svg>
+        </div>
+    </section>
+
+    <main class="bg-stone-50 py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+                
+                {/* COLUMNA IZQUIERDA: Info Práctica */}
+                <div class="space-y-8">
+                    {/* --- BLOQUE MAPA (IMAGEN ESTÁTICA) --- */}
+<div class="aspect-video bg-stone-100 rounded-2xl overflow-hidden relative shadow-lg border border-stone-200 group">
     
-    <section class="mb-12">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Mapa del Territorio</h2>
-      <div class="bg-white p-4 rounded-lg shadow-md">
-        <img src={mapaUrl} alt="Cartografía del predio Escuela Ruca Raqui" class="w-full h-auto rounded-md" />
-      </div>
-    </section>
+    {/* Enlace para abrir Google Maps al hacer clic */}
+    <a 
+        href="https://maps.app.goo.gl/7CYgcptjhtD6Ugqh8" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="block w-full h-full"
+    >
+        {/* LA IMAGEN DEL MAPA */}
+        <Image 
+            src={PredioDeEscuela}
+            alt="Ubicación de la Escuela en Isla Huapi" 
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            inferSize={true}
+            loading="lazy"
+            decoding="async"
+        />
 
-    <section class="mb-12">
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Recorridos</h2>
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <p class="text-gray-700">
-          (Contenido pendiente: Aquí pondremos la información sobre los diferentes recorridos del sendero).
-        </p>
-      </div>
-    </section>
-    
-    <section>
-      <h2 class="text-3xl font-bold text-gray-800 mb-4">Normas de Cuidado y Respeto</h2>
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <p class="text-gray-700">
-          (Contenido pendiente: Aquí irá la lista de normas que está preparando tu compañero).
-        </p>
-      </div>
-    </section>
+        {/* Overlay con texto "Ver en Google Maps" al pasar el mouse */}
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+            <span class="bg-white/90 text-green-900 px-4 py-2 rounded-full text-sm font-bold opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 shadow-lg flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                Abrir en Google Maps
+            </span>
+        </div>
+    </a>
 
-  </div>
-</BaseLayout>
+</div>
+                    <div class="bg-green-900 text-white p-8 rounded-[2rem] shadow-lg relative overflow-hidden">
+                        <div class="relative z-10">
+                            <h3 class="text-2xl font-bold font-playfair mb-4">Horarios de Visita</h3>
+                            <ul class="space-y-4">
+                                <li class="flex justify-between border-b border-green-700 pb-2">
+                                    <span>Lunes a Viernes</span>
+                                    <span class="font-bold text-amber-300">08:00 - 11:30  |  13:00 - 17:00</span>
+                                    
+                                </li>
+                                <li class="flex justify-between text-green-300 pt-2">
+                                    <span>Sabados, Domingos y Festivos</span>
+                                    <span>Cerrado</span>
+                                </li>
+                            </ul>
+                        </div>
+                        {/* Decoración */}
+                        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-green-800 rounded-full blur-3xl opacity-50"></div>
+                    </div>
+                </div>
+
+                {/* COLUMNA DERECHA: Recomendaciones */}
+                <div class="space-y-8">
+                    <h2 class="text-4xl font-bold text-green-900 font-playfair mb-8">Prepara tu mochila</h2>
+                    
+                    <div class="grid gap-6">
+                        {/* Item 1 */}
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-100 hover:border-green-200 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-2xl flex-shrink-0">👟</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-green-900">Calzado Cómodo</h3>
+                                <p class="text-stone-500 text-sm">El sendero tiene tramos de tierra y humedad. Usa zapatillas con buen agarre.</p>
+                            </div>
+                        </div>
+                        {/* Item 2 */}
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-100 hover:border-green-200 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-2xl flex-shrink-0">💧</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-green-900">Hidratación</h3>
+                                <p class="text-stone-500 text-sm">Lleva tu propia botella de agua reutilizable. ¡Evitamos el plástico!</p>
+                            </div>
+                        </div>
+                        {/* Item 3 */}
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-white border border-stone-100 hover:border-green-200 transition-colors">
+                            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-2xl flex-shrink-0">📸</div>
+                            <div>
+                                <h3 class="font-bold text-lg text-green-900">Fotografía Responsable</h3>
+                                <p class="text-stone-500 text-sm">Puedes tomar fotos, pero pide permiso si vas a fotografiar a personas de la comunidad.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-100 p-6 rounded-2xl mt-8">
+                        <p class="text-amber-900 italic font-playfair text-lg text-center">
+                            "Recuerda que entras a un espacio de aprendizaje y naturaleza viva. Tu respeto es la mejor ofrenda."
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+</Layout>

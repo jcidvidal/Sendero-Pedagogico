@@ -1,7 +1,7 @@
 ---
 title: "El Sendero y la Voz de la Machi"
 resumen: "Cómo la Machi Olga Traipe ayudó a la escuela a reconectar con el territorio y transformar el sendero en un aula viva."
-fecha: 2025-11-01
+fecha: "2025-11-01"
 creditos: "Basado en el Proyecto Escuela Ruca Raqui"
 tags: ["Espiritualidad", "Machi Olga Traipe", "Sendero Pedagógico"]
 publicado: true
