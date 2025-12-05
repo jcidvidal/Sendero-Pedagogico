@@ -1,5 +1,4 @@
 ---
-// src/pages/normas.astro
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import normas from '../assets/normas/normas.jpg';
@@ -9,7 +8,7 @@ export const prerender = true;
 
 <Layout title="Normas de Convivencia">
 
-    {/* HERO SECTION PREMIUM */}
+    {/* HERO SECTION */}
     <section class="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
         
         {/* 1. Imagen de Fondo */}
@@ -27,7 +26,7 @@ export const prerender = true;
         </div>
 
         {/* 2. Contenido */}
-        <div class="relative z-10 text-center text-white px-4 container mx-auto mt-8">
+        <div class="relative z-10 text-center text-white px-4 container mx-auto -top-3">
             <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-amber-200 text-xs font-bold tracking-widest mb-6 backdrop-blur-sm">
                 CONVIVENCIA ARMÓNICA
             </span>

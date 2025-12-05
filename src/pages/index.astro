@@ -1,12 +1,9 @@
 ---
-// src/pages/index.astro
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-//Imports de imágenes para ser formateadas por Astro
+//Imports de imágenes para ser formateadas por Astro. SSM
 import Aprendizaje from '../assets/index/aprendizaje.jpeg';
 import HeroFinal from '../assets/index/Hero_Final.jpg';
-import HeroIndex from '../assets/index/Hero_Index.jpg';
-import HeroIndex2 from '../assets/index/Hero_index2.jpeg';
 import Humedal from '../assets/index/Humedal.jpg';
 import Sendero from '../assets/index/Sendero.jpg';
 
@@ -15,10 +12,10 @@ export const prerender = true;
 
 <Layout title="Sendero Pedagógico - Escuela Pública Ruca Raqui">
 
-  {/* --- 1. HERO SECTION PREMIUM --- */}
+  {/* --- 1. HERO SECTION --- */}
   <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
     
-    {/* A. Imagen de Fondo */}
+    {/* Imagen de Fondo */}
     <div class="absolute inset-0 z-0">
         <Image 
             src={HeroFinal}
@@ -30,7 +27,7 @@ export const prerender = true;
         <div class="absolute inset-0 bg-gradient-to-b from-green-950/60 via-stone-900/50 to-stone-900/90"></div>
     </div>
 
-    {/* C. Contenido Principal */}
+    {/* Contenido Principal */}
     <div class="relative z-10 container mx-auto px-4 text-center mt-10">
         
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-green-100 text-xs font-bold tracking-[0.2em] mb-8 shadow-lg">

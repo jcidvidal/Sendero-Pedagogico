@@ -1,5 +1,4 @@
 ---
-// src/pages/proyectos.astro
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro'; 
 const pageTitle = "Proyectos de Innovación - Sendero Pedagógico";
@@ -10,10 +9,9 @@ export const prerender = true;
 
 <Layout title={pageTitle}>
     
-    {/* --- 1. HERO SECTION PREMIUM --- */}
+    {/* --- 1. HERO SECTION --- */}
     <section class="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0">
-            {/* Imagen de fondo: Algo que evoque futuro/naturaleza */}
             <Image 
                 src="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=2000&auto=format&fit=crop" 
                 alt="Naturaleza y Tecnología"
@@ -26,11 +24,11 @@ export const prerender = true;
             <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/90 via-emerald-900/80 to-stone-50"></div>
         </div>
 
-        <div class="relative z-10 container mx-auto px-4 text-center mt-10">
-            <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-emerald-200 text-xs font-bold tracking-widest mb-6 backdrop-blur-sm">
+        <div class="relative z-10 container mx-auto px-4 text-center -top-10 ">
+            <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-emerald-200 text-xs font-bold tracking-widest  backdrop-blur-sm">
                 VANGUARDIA EDUCATIVA
             </span>
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 font-playfair drop-shadow-lg leading-tight">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 font-playfair drop-shadow-lg leading-16">
                 Innovación <span class="text-amber-400 italic">&</span> <br/> Proyectos
             </h1>
             <div class="w-24 h-1 bg-amber-500 mx-auto mb-8 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.6)]"></div>
@@ -39,7 +37,7 @@ export const prerender = true;
             </p>
         </div>
         
-        {/* Separador SVG */}
+        {/* Separador*/}
         <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] text-stone-50">
             <svg class="relative block w-[calc(100%+1.3px)] h-[60px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <path d="M1200 120L0 16.48 0 0 1200 0 1200 120z" class="fill-stone-50"></path>

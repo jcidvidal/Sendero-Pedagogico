@@ -1,5 +1,4 @@
 ---
-// src/pages/login.astro
 import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
 
@@ -38,7 +37,7 @@ if (Astro.request.method === "POST") {
           secure: true,
         });
 
-        Astro.cookies.set("is-logged-in", "true", { // Indicador simple para el frontend
+        Astro.cookies.set("is-logged-in", "true", { // Cookie de frontend para actualizar el botón de inicio de sesión sin llamar al server (rutas prerrenderizadas). SebaSinMas estuvo aquí.
           path: "/",
           httpOnly: false,
           secure: true,

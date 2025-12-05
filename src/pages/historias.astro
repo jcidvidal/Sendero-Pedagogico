@@ -1,12 +1,11 @@
 ---
-// src/pages/historias.astro
 import Layout from '../layouts/Layout.astro';
 import { supabase } from '../lib/supabase';
 import StoryCard from '../components/StoryCard.astro';
 import historias from '../assets/historias/historias.jpg';
 import { Picture } from 'astro:assets';
 // --- 1. VERIFICACIÓN DE ADMIN ---
-const { isAdmin } = Astro.locals;
+const { isAdmin } = Astro.locals; //Gracias al refactor del middleware
 
 // --- 2. LÓGICA DEL SERVIDOR (POST) ---
 if (Astro.request.method === "POST") {
@@ -14,54 +13,103 @@ if (Astro.request.method === "POST") {
 
   try {
     const formData = await Astro.request.formData();
-    
-    const titulo = formData.get("titulo")?.toString() || "";
-    const resumen = formData.get("resumen")?.toString() || "";
-    const contenido = formData.get("contenido")?.toString() || "";
-    const creditos = formData.get("creditos")?.toString() || "";
-    const fecha = formData.get("fecha")?.toString() || new Date().toISOString();
-    
-    // Subida de Imagen
-    const imagenFile = formData.get("imagen");
-    let coverUrl = null;
+    const action = formData.get("action")?.toString();
+    if (action === "delete") {
+        const idToDelete = formData.get("id")?.toString();
+        
+        if (idToDelete) {
+            // 1. Primero obtenemos la historia para sacar el link de la foto
+            const { data: historia, error: fetchError } = await supabase
+                .from('historias')
+                .select('cover')
+                .eq('id', idToDelete)
+                .single();
+            if (fetchError) {
+                console.error("Error obteniendo historia:", fetchError);
+            }
+            // 2. Si tiene portada, intentamos borrarla del Storage
+            if (historia && historia.cover) {
+                // La URL es tipo: .../storage/v1/object/public/imagenes/historias/foto.jpg
+                // Necesitamos extraer solo: "historias/foto.jpg"
+                // Hacemos un split por el nombre del bucket ("imagenes")
+                const urlParts = historia.cover.split('/imagenes/');
+                
+                if (urlParts.length > 1) {
+                    // Decodificamos por si tiene espacios (%20) u otros caracteres raros
+                    const imagePath = decodeURIComponent(urlParts[1]);
 
-    if (imagenFile && imagenFile instanceof File && imagenFile.size > 0) {
-        // Nombre único
-        const fileExt = imagenFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-        const filePath = `historias/${fileName}`;
+                    const { error: storageError } = await supabase.storage
+                        .from('imagenes') // Nombre de tu bucket
+                        .remove([imagePath]); // Espera un array de rutas
 
-        // Subir a Supabase
-        const { error: uploadError } = await supabase.storage
-            .from('imagenes')
-            .upload(filePath, imagenFile);
+                    if (storageError) {
+                        console.error("Error borrando imagen del storage:", storageError);
+                    } else {
+                        console.log("Imagen borrada correctamente:", imagePath);
+                    }
+                }
+            }
 
-        if (uploadError) {
-            console.error("Error subiendo imagen:", uploadError);
-        } else {
-            const { data: publicUrlData } = supabase.storage
-                .from('imagenes')
-                .getPublicUrl(filePath);
-            coverUrl = publicUrlData.publicUrl;
+            // 3. Finalmente, borramos el registro de la base de datos
+            const { error } = await supabase
+                .from('historias')
+                .delete()
+                .eq('id', idToDelete);
+
+            if (error) console.error("Error borrando historia:", error);
         }
-    }
-
-    const slug = titulo.toLowerCase().trim()
-        .replace(/[^\w\s-]/g, '')
-        .replace(/[\s_-]+/g, '-')
-        .replace(/^-+|-+$/g, '');
-
-    const { error } = await supabase
-      .from('historias')
-      .insert({ 
-        titulo, slug, resumen, contenido, creditos, fecha, cover: coverUrl 
-      });
-
-    if (error) console.error("Error DB:", error);
-
-  } catch (error) {
-    console.error("Error general:", error);
-  }
+        
+        return Astro.redirect('/historias');
+    }else{
+        const titulo = formData.get("titulo")?.toString() || "";
+        const resumen = formData.get("resumen")?.toString() || "";
+        const contenido = formData.get("contenido")?.toString() || "";
+        const creditos = formData.get("creditos")?.toString() || "";
+        const fecha = formData.get("fecha")?.toString() || new Date().toISOString();
+        
+        // Subida de Imagen
+        const imagenFile = formData.get("imagen");
+        let coverUrl = null;
+    
+        if (imagenFile && imagenFile instanceof File && imagenFile.size > 0) {
+            // Nombre único
+            const fileExt = imagenFile.name.split('.').pop();
+            const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const filePath = `historias/${fileName}`;
+    
+            // Subir a Supabase
+            const { error: uploadError } = await supabase.storage
+                .from('imagenes')
+                .upload(filePath, imagenFile);
+    
+            if (uploadError) {
+                console.error("Error subiendo imagen:", uploadError);
+            } else {
+                const { data: publicUrlData } = supabase.storage
+                    .from('imagenes')
+                    .getPublicUrl(filePath);
+                coverUrl = publicUrlData.publicUrl;
+            }
+        }
+        
+    
+        const slug = titulo.toLowerCase().trim()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    
+        const { error } = await supabase
+          .from('historias')
+          .insert({ 
+            titulo, slug, resumen, contenido, creditos, fecha, cover: coverUrl 
+          });
+    
+        if (error) console.error("Error DB:", error);
+    
+    } 
+    }catch (error) {
+        console.error("Error general:", error);
+      }
 }
 
 // --- 3. OBTENER HISTORIAS ---
@@ -89,7 +137,7 @@ const { data: allHistorias } = await supabase
                 />
             <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/90 via-green-900/80 to-stone-50"></div>
         </div>
-        <div class="container mx-auto px-4 text-center text-white relative z-10 mt-10">
+        <div class="container mx-auto px-4 text-center text-white relative z-10 -top-5">
             <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-white/20 text-green-100 text-xs font-bold tracking-widest mb-4 backdrop-blur-sm">MEMORIA VIVA</span>
             <h1 class="text-5xl md:text-6xl font-bold mb-6 font-playfair drop-shadow-md">Historias y Relatos</h1>
             <div class="w-24 h-1 bg-amber-400 mx-auto mb-6 rounded-full"></div>
